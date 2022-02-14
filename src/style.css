@@ -1,0 +1,22 @@
+html {
+    background-color: black;
+}
+
+#board {
+    max-width: 80%;
+}
+
+.buttons:hover {
+    background-color: #FAFF00;
+    color: white;
+}
+
+.buttons {
+    background-color: black;
+    color: white;
+    transition-duration: 0.4s;
+}
+
+h1, h3 {
+    color: #FAFF00; 
+}
