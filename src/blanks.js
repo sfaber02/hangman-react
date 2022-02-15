@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Blanks = () => {
+const Blanks = (props) => {
+    const current = props.current;
     return (
-        <h3>The letter blanks will go here</h3>
+        <h1>{current.join('   ')}</h1>
     );
 }
 
