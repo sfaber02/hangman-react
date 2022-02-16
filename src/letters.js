@@ -8,7 +8,7 @@ const Letters = (props) => {
             let currentLetter = String.fromCharCode(letter);
             tempLetters.push(<button onClick={props.handleClick} className="buttons" key={letter} id={currentLetter} name={currentLetter}>{currentLetter}</button>)
         }
-        tempLetters.splice(13, 0, <br></br>);
+        tempLetters.splice(13, 0, <br key="lb"></br>);
         return tempLetters;
     });
 

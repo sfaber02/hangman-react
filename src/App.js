@@ -23,19 +23,16 @@ const App = () => {
     }
 
     const findMatch = (letter) => {
-        let foundIndices = [];
+        let foundOne = false;
         let tempCurr = [...current];
         console.log(tempCurr);
         for (let char in word) {
             if (word[char].toLowerCase() == letter.toLowerCase()){
-                foundIndices.push(char);
+                tempCurr[char] = letter;
+                foundOne = true;
             }
         }
-        if (foundIndices.length){
-            for (let i of foundIndices) {
-                tempCurr[i] = letter;
-            }
-        }else{
+        if (!foundOne){
             setTurn((prev) => prev + 1);
         }
         console.log (tempCurr);
