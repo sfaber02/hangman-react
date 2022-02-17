@@ -9,23 +9,23 @@ const App = () => {
     
     const [ word, setWord ] = useState(words[Math.floor(Math.random() * (words.length - 1))]);
     console.log (word) //for cheating
-    const [turn, setTurn] = useState(0);
+    const [turn, setTurn] = useState(() => 0);
     const [gameState, setGameState] = useState(() => {
         let initialBoard = [];
-        console.log ('initialize state');
         for (let e = 0; e < word.length; e++) {
             initialBoard.push ('_');
         }
         return initialBoard;
     });
-    const [usedLetters, setUsedLetters] = useState([]);
+    const [usedLetters, setUsedLetters] = useState(() => []);
+    // const [gameStatus, setGameStatus] = useState({ status: "newGame" })
     
 
     const handleClick = ({ target }) => {
         findMatch(target.id, gameState);
         addUsedLetter(target.id);
     }
-
+    
     const findMatch = (letter, currentState) => {
         let foundOne = false;
         for (let char in word) {
@@ -38,12 +38,24 @@ const App = () => {
             setTurn((prev) => prev + 1);
         }
         setGameState([...currentState]);
+        checkWinLose(gameState, turn);
     }
 
     const addUsedLetter = (letter) => {
         setUsedLetters((prevLetters) => [...prevLetters, letter]);
     }
-    
+
+    const checkWinLose = (currentState, turnsTaken) => {
+        console.log (turnsTaken);
+        if (turnsTaken + 1 <= 6 && currentState.join('').toLowerCase() === word.toLowerCase()){
+            console.log ('You WIN!');
+        }else if (turnsTaken + 1 > 6) {
+            console.log ('YOU LOSE')
+        }
+    }
+
+
+
 
 
 
@@ -55,7 +67,6 @@ const App = () => {
             <Blanks current={gameState} />
             <Letters handleClick={handleClick} usedLetters={usedLetters} />
             <h3>{turn}</h3>
-            <h3>{gameState}</h3>
         </div>
     );
 }
