@@ -8,44 +8,42 @@ import { words } from './words.js';
 const App = () => {
     
     const [ word, setWord ] = useState(words[Math.floor(Math.random() * (words.length - 1))]);
+    console.log (word) //for cheating
     const [turn, setTurn] = useState(0);
-    let current = [];
-    const [gameState, setGameState] = useState(current);
-    const [usedLetters, setUsedLetters] = useState([]);
-    
-    
-    useEffect(() => {
+    const [gameState, setGameState] = useState(() => {
+        let initialBoard = [];
         console.log ('initialize state');
         for (let e = 0; e < word.length; e++) {
-            current.push ('_');
+            initialBoard.push ('_');
         }
-        setGameState(() => [...current]);
-    }, [] );
-
+        return initialBoard;
+    });
+    const [usedLetters, setUsedLetters] = useState([]);
     
+
     const handleClick = ({ target }) => {
-        findMatch(target.id);
+        findMatch(target.id, gameState);
         addUsedLetter(target.id);
-        console.log (current);
     }
 
-    const findMatch = (letter) => {
+    const findMatch = (letter, currentState) => {
         let foundOne = false;
         for (let char in word) {
             if (word[char].toLowerCase() == letter.toLowerCase()){
-                current[char] = letter;
+                currentState[char] = letter;
                 foundOne = true;
             }
         }
         if (!foundOne){
             setTurn((prev) => prev + 1);
         }
-        setGameState([...current]);
+        setGameState([...currentState]);
     }
 
     const addUsedLetter = (letter) => {
         setUsedLetters((prevLetters) => [...prevLetters, letter]);
     }
+    
 
 
 
@@ -57,7 +55,7 @@ const App = () => {
             <Blanks current={gameState} />
             <Letters handleClick={handleClick} usedLetters={usedLetters} />
             <h3>{turn}</h3>
-            <h3>{current}</h3>
+            <h3>{gameState}</h3>
         </div>
     );
 }
