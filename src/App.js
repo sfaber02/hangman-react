@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Letters } from './letters.js';
-import { Blanks } from './blanks.js'
-import { HangmanDude } from './hangmandude.js'
-
-
+import { Blanks } from './blanks.js';
+import { HangmanDude } from './hangmandude.js';
+import { words } from './words.js';
 
 
 const App = () => {
-    const word = 'banana'.split('');
+    
+    const [ word, setWord ] = useState(words[Math.floor(Math.random() * (words.length - 1))]);
     const [turn, setTurn] = useState(0);
     let current = [];
     const [gameState, setGameState] = useState(current);
+    const [usedLetters, setUsedLetters] = useState([]);
     
     
     useEffect(() => {
@@ -19,13 +20,12 @@ const App = () => {
             current.push ('_');
         }
         setGameState(() => [...current]);
-        console.log (current);
-        console.log (gameState);
     }, [] );
 
     
     const handleClick = ({ target }) => {
         findMatch(target.id);
+        addUsedLetter(target.id);
         console.log (current);
     }
 
@@ -43,6 +43,10 @@ const App = () => {
         setGameState([...current]);
     }
 
+    const addUsedLetter = (letter) => {
+        setUsedLetters((prevLetters) => [...prevLetters, letter]);
+    }
+
 
 
 
@@ -51,7 +55,7 @@ const App = () => {
             <h2>Hangman</h2>
             <HangmanDude turn={turn} />
             <Blanks current={gameState} />
-            <Letters handleClick={handleClick} />
+            <Letters handleClick={handleClick} usedLetters={usedLetters} />
             <h3>{turn}</h3>
             <h3>{current}</h3>
         </div>

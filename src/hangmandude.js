@@ -4,7 +4,6 @@ import './style.css'
 
 const HangmanDude = (props) => {
     let turn = props.turn;
-    console.log(props.turn);
     if (turn > 7) turn = 7;
 
     return (
