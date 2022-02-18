@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Letters } from './letters.js';
 import { Blanks } from './blanks.js';
 import { HangmanDude } from './hangmandude.js';
@@ -7,24 +7,31 @@ import { words } from './words.js';
 
 const App = () => {
     
-    //4 possible statuses 'new game', 'won', 'lost', 'in progress'
-    const [game, setGame] = useState({ status: "new game" })
-    const [ word, setWord ] = useState(words[Math.floor(Math.random() * (words.length - 1))]);
-    console.log (word) //for cheating
+    //5 possible statuses 'new game', 'won', 'lost', 'in progress' 'startup'
+    const [game, setGame] = useState({ status: "startup" })
+    const word = useRef('');
     const [turn, setTurn] = useState(() => 0);
-    const [gameState, setGameState] = useState(() => {
-        let initialBoard = [];
-        for (let e = 0; e < word.length; e++) {
-            initialBoard.push ('_');
-        }
-        return initialBoard;
-    });
+    const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
 
 
     useEffect(() => {
-        
-    }, [game]);
+        switch (game.status) {
+            case ('new game'):
+                word.current = words[Math.floor(Math.random() * (words.length - 1))];
+                setTurn(0);
+                setGameState(() => {
+                    let initialBoard = [];
+                    for (let e = 0; e < word.current.length; e++) {
+                        initialBoard.push ('_');
+                    }
+                    return initialBoard;
+                });
+                setUsedLetters(() => []);
+                setGame({status: 'in progress'});
+                break;
+        }
+    }, [game.status]);
     
 
     const handleClick = ({ target }) => {
@@ -34,8 +41,8 @@ const App = () => {
     
     const findMatch = (letter, currentState) => {
         let foundOne = false;
-        for (let char in word) {
-            if (word[char].toLowerCase() == letter.toLowerCase()){
+        for (let char in word.current) {
+            if (word.current[char].toLowerCase() == letter.toLowerCase()){
                 currentState[char] = letter;
                 foundOne = true;
             }
@@ -52,19 +59,15 @@ const App = () => {
     }
 
     const checkWinLose = (currentState, turnsTaken) => {
-        console.log (turnsTaken);
-        if (turnsTaken + 1 <= 6 && currentState.join('').toLowerCase() === word.toLowerCase()){
-            console.log ('You WIN!');
+        if (turnsTaken + 1 <= 6 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
             setGame({status: 'won'});
         }else if (turnsTaken + 1 > 6) {
-            console.log ('YOU LOSE')
             setGame({ status: 'lost'});
         }
     }
 
     const startGame = () => {
-        setGame({status: 'in progress'});
-        console.log ('new game start');
+        setGame({status: 'new game'});
     }
 
 
@@ -75,11 +78,12 @@ const App = () => {
     return (
         <div>
             <h2>Hangman</h2>
-            {game.status == 'in progress' && <HangmanDude turn={turn} />}
-            {game.status == 'in progress' && <Blanks current={gameState} />}
-            {game.status == 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
+            {game.status === 'in progress' && <HangmanDude turn={turn} />}
+            {game.status === 'in progress' && <Blanks current={gameState} />}
+            {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
+            {game.status === 'won' && <h3>YOU WON!</h3>}
+            {game.status === 'lost' && <h3>YOU LOSE</h3>}
             {game.status !== 'in progress' && <button id='newGame' onClick={startGame} >New Game</button>}
-            
         </div>
     );
 }

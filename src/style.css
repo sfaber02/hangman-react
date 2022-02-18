@@ -39,3 +39,9 @@ h1 {
     color: #faff00; 
     font-size: 40pt;
 }
+
+#newGame {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
