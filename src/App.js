@@ -1,9 +1,9 @@
+import './style.css'
 import React, { useState, useEffect, useRef } from 'react';
 import { Letters } from './letters.js';
 import { Blanks } from './blanks.js';
 import { HangmanDude } from './hangmandude.js';
 import { words } from './words.js';
-
 
 const App = () => {
     
@@ -76,7 +76,7 @@ const App = () => {
 
 
     return (
-        <div>
+        <div id="mainContainer">
             {game.status != 'in progress' ? <h2>Hangman</h2> : <br></br>}
             {game.status === 'in progress' && <HangmanDude turn={turn} />}
             {game.status === 'in progress' && <Blanks current={gameState} />}
@@ -84,7 +84,7 @@ const App = () => {
             {game.status === 'won' && <h3>YOU WON!</h3>}
             {game.status === 'lost' && <h3>YOU LOSE</h3>}
             {game.status !== 'in progress' && <div id='newGame'><button onClick={startGame} >New Game</button></div>}
-            <h3>{word.current}</h3>
+            {/* <h3>{word.current}</h3> */}
         </div>
     );
 }

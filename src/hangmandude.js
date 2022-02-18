@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import boardGraphics from './graphics/board-graphics';
-import './style.css'
+
 
 const HangmanDude = (props) => {
     let turn = props.turn;
     if (turn > 7) turn = 7;
 
     return (
-       <div id="hangmanDude">
-           <img id="board" src={boardGraphics[turn]} />
+       <div id="hangmanBoard">
+           <img id="boardGraphics" src={boardGraphics[turn]} />
        </div> 
     );
 }

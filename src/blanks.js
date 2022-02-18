@@ -26,10 +26,8 @@ const Blanks = (props) => {
 
 
     return (
-        <div>
-            <div id='letterBlanks'>
-                {letterBlanks.map((blank) => blank)}
-            </div>
+        <div id='letterBlanks'>
+            {letterBlanks.map((blank) => blank)}
         </div>
     );
 }
