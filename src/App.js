@@ -7,7 +7,7 @@ import { words } from './words.js';
 
 const App = () => {
     
-    //5 possible statuses 'new game', 'won', 'lost', 'in progress' 'startup'
+    //5 possible statuses 'new game', 'won', 'lost', 'in progress', 'startup'
     const [game, setGame] = useState({ status: "startup" })
     const word = useRef('');
     const [turn, setTurn] = useState(() => 0);
@@ -77,13 +77,14 @@ const App = () => {
 
     return (
         <div>
-            <h2>Hangman</h2>
+            {game.status != 'in progress' ? <h2>Hangman</h2> : <br></br>}
             {game.status === 'in progress' && <HangmanDude turn={turn} />}
             {game.status === 'in progress' && <Blanks current={gameState} />}
             {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
             {game.status === 'won' && <h3>YOU WON!</h3>}
             {game.status === 'lost' && <h3>YOU LOSE</h3>}
-            {game.status !== 'in progress' && <button id='newGame' onClick={startGame} >New Game</button>}
+            {game.status !== 'in progress' && <div id='newGame'><button onClick={startGame} >New Game</button></div>}
+            <h3>{word.current}</h3>
         </div>
     );
 }

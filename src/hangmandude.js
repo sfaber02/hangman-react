@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import boardGraphics from './graphics/images';
+import boardGraphics from './graphics/board-graphics';
 import './style.css'
 
 const HangmanDude = (props) => {
