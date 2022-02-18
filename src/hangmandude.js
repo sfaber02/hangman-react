@@ -7,7 +7,7 @@ const HangmanDude = (props) => {
     if (turn > 7) turn = 7;
 
     return (
-       <div>
+       <div id="hangmanDude">
            <img id="board" src={boardGraphics[turn]} />
        </div> 
     );

@@ -21,7 +21,7 @@ const Letters = (props) => {
 
         
     return (
-        <div>
+        <div id="buttonGrid">
             {letters.map((letter) => letter)}
         </div>
     );
