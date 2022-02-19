@@ -4,20 +4,30 @@ import { Letters } from './letters.js';
 import { Blanks } from './blanks.js';
 import { HangmanDude } from './hangmandude.js';
 import { words } from './words.js';
+import { Startup } from './startup';
 
 const App = () => {
     
-    //5 possible statuses 'new game', 'won', 'lost', 'in progress', 'startup'
-    const [game, setGame] = useState({ status: "startup" })
-    const word = useRef('');
+    /* possible game.status(es) 
+        'new game' 
+        'won' 
+        'lost' 
+        'in progress' 
+        'startup' 
+    */
+
+    const [game, setGame] = useState({ status: "startup", startUpStep: 1 })
     const [turn, setTurn] = useState(() => 0);
     const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
-
+    const word = useRef('');
+    let startupTimer = useRef(0);
 
     useEffect(() => {
         switch (game.status) {
             case ('new game'):
+                console.log (startupTimer.current);
+                clearInterval(startupTimer.current);
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
                 setTurn(0);
                 setGameState(() => {
@@ -30,6 +40,21 @@ const App = () => {
                 setUsedLetters(() => []);
                 setGame({status: 'in progress'});
                 break;
+            case ('startup'):
+                console.log ('startup case')
+                startupTimer.current = setInterval(() => { 
+                    console.log ('interval running');
+                    setGame((prevState) => {
+                        return(
+                            ({
+                                ...prevState,
+                                startUpStep : prevState.startUpStep + 1
+                            })
+                        );
+                    });
+                }, 750);
+                break;
+            // case ('')
         }
     }, [game.status]);
     
@@ -77,14 +102,14 @@ const App = () => {
 
     return (
         <div id="mainContainer">
-            {game.status != 'in progress' ? <h2>Hangman</h2> : <br></br>}
-            {game.status === 'in progress' && <HangmanDude turn={turn} />}
-            {game.status === 'in progress' && <Blanks current={gameState} />}
-            {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
+            {game.status === 'startup' && <Startup step={game.startUpStep} />}
             {game.status === 'won' && <h3>YOU WON!</h3>}
             {game.status === 'lost' && <h3>YOU LOSE</h3>}
-            {game.status !== 'in progress' && <div id='newGame'><button onClick={startGame} >New Game</button></div>}
-            {/* <h3>{word.current}</h3> */}
+            {game.status === 'in progress' && <HangmanDude turn={turn} />}
+            {(game.status === 'in progress' || game.status === 'won' || game.status === 'lost') && <Blanks current={gameState} status={game.status} word={word.current} />}
+            {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
+            {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && <div id='newGame'><button onClick={startGame} >New Game</button></div>}
+            <h3>{word.current}</h3>
         </div>
     );
 }

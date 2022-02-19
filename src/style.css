@@ -26,7 +26,8 @@ h1 {
     position: relative;
     height: 99%;
     align-items: center;
-    border: 1px solid #faff00;
+    margin-top: 30px;
+    /* border: 1px solid #faff00; */
 }
 
 /* img parent div */
@@ -35,14 +36,14 @@ h1 {
     height: 70%;
     margin-bottom: 30px;
     margin-top: 0px;
-    border: 1px solid #faff00;
+    /* border: 1px solid #faff00; */
 }
 
 #letterBlanks {
     position: relative;
     bottom: 1%;
-    border: 1px solid #faff00;
     margin-bottom: 10px;
+    /* border: 1px solid #faff00; */
 }
 
 #buttonGrid {
@@ -51,7 +52,7 @@ h1 {
     max-width: 500px;
     bottom: 0;
     margin-bottom: 20px;
-    border: 1px solid #faff00;
+    /* border: 1px solid #faff00; */
 }
 
 
@@ -75,5 +76,13 @@ h1 {
     border-radius: 50%;
     width: 7.6%;
     height: 30px;
+}
 
+.disabledButtons {
+    background-color: black;
+    color: black;
+    transition-duration: 0.4s;
+    border-radius: 50%;
+    width: 7.6%;
+    height: 30px;
 }

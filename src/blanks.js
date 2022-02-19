@@ -3,6 +3,11 @@ import letterGraphics from './graphics/letter-graphics';
 
 const Blanks = (props) => {
     const current = props.current;
+    const status = props.status;
+    const word = props.word;
+    let solved = [];
+
+    console.log (status);
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
@@ -24,10 +29,17 @@ const Blanks = (props) => {
         });
     }, [current]);
 
+    if (status == 'lost') {
+        for (let letter of word) {
+            solved.push(<img src={letterGraphics[letter]} key={letter} id={letter} />)
+        }
+    }
+
 
     return (
         <div id='letterBlanks'>
-            {letterBlanks.map((blank) => blank)}
+            {status === 'in progress' && letterBlanks.map((blank) => blank)}
+            {(status === 'won' || status === 'lost') && solved.map((letter) => letter)}
         </div>
     );
 }
