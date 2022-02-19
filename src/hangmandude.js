@@ -8,7 +8,7 @@ const HangmanDude = (props) => {
 
     return (
        <div id="hangmanBoard">
-           <img id="boardGraphics" src={boardGraphics[turn]} />
+           <img className='bigGraphics' src={boardGraphics[turn]} />
        </div> 
     );
 }

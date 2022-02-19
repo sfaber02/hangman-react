@@ -41,9 +41,7 @@ const App = () => {
                 setGame({status: 'in progress'});
                 break;
             case ('startup'):
-                console.log ('startup case')
                 startupTimer.current = setInterval(() => { 
-                    console.log ('interval running');
                     setGame((prevState) => {
                         return(
                             ({
@@ -52,7 +50,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 750);
+                }, 500);
                 break;
             // case ('')
         }
@@ -108,7 +106,7 @@ const App = () => {
             {game.status === 'in progress' && <HangmanDude turn={turn} />}
             {(game.status === 'in progress' || game.status === 'won' || game.status === 'lost') && <Blanks current={gameState} status={game.status} word={word.current} />}
             {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
-            {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && <div id='newGame'><button onClick={startGame} >New Game</button></div>}
+            {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && <div id="newGame"><button className='menuButtons' onClick={startGame} >New Game</button></div>}
             <h3>{word.current}</h3>
         </div>
     );

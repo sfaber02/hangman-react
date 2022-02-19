@@ -1,14 +1,13 @@
 import React from 'react';
-
+import startupGraphics from './graphics/startupgraphics';
 
 const Startup = (props) => {
     let step = props.step;
+    if (step > 4) step = 4;
 
     return (
         <div id="startup">
-            {step > 1 && <h1>LET'S</h1>}
-            {step > 2 && <h1>PLAY</h1>}
-            {step > 3 && <h1>HANGMAN</h1>}
+            {<img className='bigGraphics' src={startupGraphics[step - 2]} />}
         </div>
         );
 }

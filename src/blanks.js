@@ -7,7 +7,6 @@ const Blanks = (props) => {
     const word = props.word;
     let solved = [];
 
-    console.log (status);
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
@@ -29,7 +28,7 @@ const Blanks = (props) => {
         });
     }, [current]);
 
-    if (status == 'lost') {
+    if (status == 'lost' || status == 'won') {
         for (let letter of word) {
             solved.push(<img src={letterGraphics[letter]} key={letter} id={letter} />)
         }
