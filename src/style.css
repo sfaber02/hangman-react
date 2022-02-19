@@ -9,30 +9,22 @@ html, body {
     margin: 0px;
 }
 
-h2, h3 {
-    text-align: center;
-    color: #FAFF00; 
-}
-
-h1 {
-    text-align: center;
-    color: #faff00; 
-    font-size: 40pt;
-}
-
 #mainContainer {
     display: flex;
     flex-direction: column;
     position: relative;
     height: 99%;
     align-items: center;
-    margin-top: 30px;
-    /* border: 1px solid #faff00; */
+    margin-top: 0px;
+    border-left: 10px solid #faff00;
+    border-right: 10px solid #faff00;
+    border-top: 10px solid #faff00;
+    /* border-bottom: 10px solid #faff00; */
 }
 
 #startup {
     position: relative;
-    height: 70%;
+    height: 96%;
     margin-bottom: 30px;
     margin-top: 0px;
     /* border: 1px solid #faff00; */
@@ -43,7 +35,7 @@ h1 {
     position: relative;
     height: 70%;
     margin-bottom: 30px;
-    margin-top: 0px;
+    margin-top: 20px;
     /* border: 1px solid #faff00; */
 }
 
@@ -63,19 +55,53 @@ h1 {
     /* border: 1px solid #faff00; */
 }
 
-#newGame {
+/* #newGame {
     position: absolute;
     top: 30%;
+} */
+
+#scoreBoard {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    background-color: #02a9ea;
+    width: 100%;
+    height: 35px;
+    padding: 0px;
+    font-size: 20px;
+    border-top: 10px solid #faff00;
+    border-left: 10px solid #02a9ea;
+    border-right: 10px solid #02a9ea;
+    justify-content:center
+}
+
+.scoreInfo {
+    text-align: center;
+    color: #FAFF00;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    /* border: 1px solid #faff00; */
+}
+
+#menu {
+    position: absolute;
+    top: 36%;
+    /* border: 1px solid #faff00; */
 }
 
 .menuButtons {
+    width: 300px;
     background-color: #ff01fb;
     border: none;
     color: black;
     padding: 20px 50px;
+    margin: 10px;
     font-size: 32px;
     font-family: "impact";
     border-radius: 5%;
+    box-shadow: 5px 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .menuButtons:hover {
@@ -113,3 +139,12 @@ h1 {
     max-height: 100%;
 }
 
+h1 {
+    color:#faff00;
+}
+
+#cheatWord {
+    color:#faff00;
+    position: absolute;
+    top: 100px;
+}

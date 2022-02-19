@@ -30,7 +30,7 @@ const Blanks = (props) => {
 
     if (status == 'lost' || status == 'won') {
         for (let letter of word) {
-            solved.push(<img src={letterGraphics[letter]} key={letter} id={letter} />)
+            solved.push(<img src={letterGraphics[letter]} key={Math.floor(Math.random() * 1000)} id={letter} />)
         }
     }
 

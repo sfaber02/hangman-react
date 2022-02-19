@@ -5,11 +5,13 @@ import { Blanks } from './blanks.js';
 import { HangmanDude } from './hangmandude.js';
 import { words } from './words.js';
 import { Startup } from './startup';
+import { ScoreBoard } from './scoreboard';
 
 const App = () => {
     
     /* possible game.status(es) 
-        'new game' 
+        'new game'
+        'continue' 
         'won' 
         'lost' 
         'in progress' 
@@ -20,14 +22,17 @@ const App = () => {
     const [turn, setTurn] = useState(() => 0);
     const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
+    const [scoreLives, setScoreLives] = useState({score: 0, lives: 3, status: game.status});
     const word = useRef('');
+    // const score = useRef(0);
+    // const lives = useRef(3);
     let startupTimer = useRef(0);
 
     useEffect(() => {
         switch (game.status) {
-            case ('new game'):
-                console.log (startupTimer.current);
+            case ('new game') :
                 clearInterval(startupTimer.current);
+                // score.current = 0;
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
                 setTurn(0);
                 setGameState(() => {
@@ -40,7 +45,9 @@ const App = () => {
                 setUsedLetters(() => []);
                 setGame({status: 'in progress'});
                 break;
-            case ('startup'):
+            case ('continue'):
+                break;
+            case ('startup') :
                 startupTimer.current = setInterval(() => { 
                     setGame((prevState) => {
                         return(
@@ -52,7 +59,25 @@ const App = () => {
                     });
                 }, 500);
                 break;
-            // case ('')
+            case ('won') :{
+                let tempScore = word.current.length * 100 - turn * 30;
+                setScoreLives((prev) => {
+                    return({
+                        ...prev,
+                        score: prev.score + tempScore
+                    })
+                }); 
+                break;
+            }
+            case ('lost') :
+                setScoreLives((prev) => {
+                    return ({
+                        ...prev,
+                        lives: prev.lives - 1
+                    })
+                });
+                break;
+            
         }
     }, [game.status]);
     
@@ -100,14 +125,36 @@ const App = () => {
 
     return (
         <div id="mainContainer">
-            {game.status === 'startup' && <Startup step={game.startUpStep} />}
-            {game.status === 'won' && <h3>YOU WON!</h3>}
-            {game.status === 'lost' && <h3>YOU LOSE</h3>}
-            {game.status === 'in progress' && <HangmanDude turn={turn} />}
-            {(game.status === 'in progress' || game.status === 'won' || game.status === 'lost') && <Blanks current={gameState} status={game.status} word={word.current} />}
-            {game.status === 'in progress' && <Letters handleClick={handleClick} usedLetters={usedLetters} />}
-            {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && <div id="newGame"><button className='menuButtons' onClick={startGame} >New Game</button></div>}
-            <h3>{word.current}</h3>
+            {game.status === 'startup' && 
+                <Startup step={game.startUpStep} />
+            }
+            {game.status === 'won' &&
+                <h1>YOU WON!</h1>
+            }
+            {game.status === 'lost' && 
+                <h1>YOU LOSE</h1>
+            }
+            {game.status === 'in progress' && 
+                <HangmanDude turn={turn} />
+            }
+            {(game.status === 'in progress' || game.status === 'won' || game.status === 'lost') && 
+                <Blanks current={gameState} status={game.status} word={word.current} />
+            }
+            {game.status === 'in progress' && 
+                <Letters handleClick={handleClick} usedLetters={usedLetters} />
+            }
+            {game.status != 'startup' && 
+                <ScoreBoard scoreLives={scoreLives} />
+            }
+            <div id="menu">
+                {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && 
+                    <div id="newGame"><button className='menuButtons' onClick={startGame} >New Game</button></div>
+                }
+                {(game.status == 'won' || game.status == 'lost' && scoreLives.lives > 0)  && 
+                    <div id="continue"><button className='menuButtons' onClick={startGame} >Continue</button></div>
+                }
+            </div>
+            <h3 id="cheatWord">{word.current}</h3>
         </div>
     );
 }
