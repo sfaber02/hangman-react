@@ -67,7 +67,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 50);
+                }, 1250);
                 break;
             case ('won') :{
                 let tempScore = word.current.length * 100 - turn * 30;
@@ -143,10 +143,16 @@ const App = () => {
                 <Startup step={game.startUpStep} />
             }
             {game.status === 'won' &&
-                <h1>YOU WON!</h1>
+                <div className="scoreMessage">
+                    <h1>THAT'S IT!</h1>
+                    <h4>Scored {word.current.length * 100 - turn * 30} Points</h4>
+                </div>
             }
             {game.status === 'lost' && 
-                <h1>YOU LOSE</h1>
+                <div className='scoreMessage'>
+                    <h1>YOU ARE HANGED</h1>
+                    <h4>The word was:</h4>
+                </div>
             }
             {game.status === 'in progress' && 
                 <HangmanDude turn={turn} />
