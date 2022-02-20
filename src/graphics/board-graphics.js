@@ -9,9 +9,4 @@ const boardGraphics = [
     require('./7.png'),
 ]
 
-const letterGraphics = [
-    require('./blank-space.png')
-];
-
-
 export default boardGraphics;

@@ -11,20 +11,21 @@ html, body {
 
 #mainContainer {
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     position: relative;
-    height: 99%;
+    height: 100%;
     align-items: center;
     margin-top: 0px;
     border-left: 10px solid #faff00;
     border-right: 10px solid #faff00;
     border-top: 10px solid #faff00;
-    /* border-bottom: 10px solid #faff00; */
+    border-bottom: 10px solid #faff00;
 }
 
 #startup {
     position: relative;
-    height: 96%;
+    height: 100%;
     margin-bottom: 30px;
     margin-top: 0px;
     /* border: 1px solid #faff00; */
@@ -144,7 +145,7 @@ h1 {
 }
 
 #cheatWord {
-    color:#faff00;
+    color:#db9121;
     position: absolute;
     top: 100px;
 }

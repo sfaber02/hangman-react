@@ -22,17 +22,16 @@ const App = () => {
     const [turn, setTurn] = useState(() => 0);
     const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
-    const [scoreLives, setScoreLives] = useState({score: 0, lives: 3, status: game.status});
+    const [scoreLives, setScoreLives] = useState({score: 0, lives: 3 });
     const word = useRef('');
-    // const score = useRef(0);
-    // const lives = useRef(3);
     let startupTimer = useRef(0);
 
     useEffect(() => {
         switch (game.status) {
             case ('new game') :
                 clearInterval(startupTimer.current);
-                // score.current = 0;
+                document.getElementById('mainContainer').style.borderBottom = "0";
+                setScoreLives({score: 0, lives: 3, status: game.status});
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
                 setTurn(0);
                 setGameState(() => {
@@ -46,6 +45,17 @@ const App = () => {
                 setGame({status: 'in progress'});
                 break;
             case ('continue'):
+                word.current = words[Math.floor(Math.random() * (words.length - 1))];
+                setTurn(0);
+                setGameState(() => {
+                    let initialBoard = [];
+                    for (let e = 0; e < word.current.length; e++) {
+                        initialBoard.push ('_');
+                    }
+                    return initialBoard;
+                });
+                setUsedLetters(() => []);
+                setGame({status: 'in progress'});
                 break;
             case ('startup') :
                 startupTimer.current = setInterval(() => { 
@@ -57,7 +67,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 500);
+                }, 50);
                 break;
             case ('won') :{
                 let tempScore = word.current.length * 100 - turn * 30;
@@ -107,7 +117,7 @@ const App = () => {
     }
 
     const checkWinLose = (currentState, turnsTaken) => {
-        if (turnsTaken + 1 <= 6 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
+        if (turnsTaken + 1 <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
             setGame({status: 'won'});
         }else if (turnsTaken + 1 > 6) {
             setGame({ status: 'lost'});
@@ -116,6 +126,10 @@ const App = () => {
 
     const startGame = () => {
         setGame({status: 'new game'});
+    }
+
+    const continueGame = () => {
+        setGame({status: 'continue'});
     }
 
 
@@ -144,14 +158,14 @@ const App = () => {
                 <Letters handleClick={handleClick} usedLetters={usedLetters} />
             }
             {game.status != 'startup' && 
-                <ScoreBoard scoreLives={scoreLives} />
+                <ScoreBoard scoreLives={scoreLives} turn={turn} />
             }
             <div id="menu">
-                {(game.status !== 'in progress' && (game.startUpStep > 4 || !game.startUpStep))  && 
+                {(game.status !== 'in progress' && game.status !== 'won' && (game.status != 'lost' || scoreLives.lives <= 0) && (game.startUpStep > 4 || !game.startUpStep))  && 
                     <div id="newGame"><button className='menuButtons' onClick={startGame} >New Game</button></div>
                 }
                 {(game.status == 'won' || game.status == 'lost' && scoreLives.lives > 0)  && 
-                    <div id="continue"><button className='menuButtons' onClick={startGame} >Continue</button></div>
+                    <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
             <h3 id="cheatWord">{word.current}</h3>
