@@ -7,6 +7,7 @@ import { words } from './words.js';
 import { Startup } from './startup';
 import { ScoreBoard } from './scoreboard';
 import { HighScore } from './highscore.js';
+import soundEffect from './sounds/beep.wav';
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         'lost' 
     */
 
+    
     const [game, setGame] = useState({ status: "startup", startUpStep: 1 })
     const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
@@ -27,7 +29,9 @@ const App = () => {
     const word = useRef('');
     let startupTimer = useRef(0);
     let tries = useRef(() => 0);
-
+    
+    //sound 
+    const beep = new Audio (soundEffect);
 
 
     useEffect(() => {
@@ -97,6 +101,7 @@ const App = () => {
     }, [game.status]);
 
     const handleClick = ({ target }) => {
+        beep.play();
         findMatch(target.id, gameState);
         addUsedLetter(target.id);
     }
@@ -180,7 +185,7 @@ const App = () => {
                     <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
-            <h3 id="cheatWord">{word.current}</h3>
+            {/* <h3 id="cheatWord">{word.current}</h3> */}
         </div>
     );
 }
