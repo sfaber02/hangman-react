@@ -34,10 +34,11 @@ const App = () => {
     useEffect(() => {
         switch (game.status) {
             case ('startup') :
+                
                 // soundEffects.startup.load();
+                // soundEffects.startup.play();
                 startupTimer.current = setInterval(() => { 
                     setGame((prevState) => {
-                        soundEffects.startup.play();
                         return(
                             ({
                                 ...prevState,
@@ -45,7 +46,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 1750);
+                }, 50);
                 break;
             case ('new game') :
                 clearInterval(startupTimer.current);
@@ -108,28 +109,38 @@ const App = () => {
         let foundOne = false;
         for (let char in word.current) {
             if (word.current[char].toLowerCase() == letter.toLowerCase()){
-                soundEffects.correctLetter.play();
                 currentState[char] = letter;
                 foundOne = true;
             }
         }
         if (!foundOne){
-            soundEffects.wrongLetter.play();
             tries.current++;
         }
         setGameState([...currentState]);
-        checkWinLose(gameState, tries.current);
+        checkWinLose(gameState, tries.current, foundOne);
     }
 
     const addUsedLetter = (letter) => {
         setUsedLetters((prevLetters) => [...prevLetters, letter]);
     }
 
-    const checkWinLose = (currentState, turnsTaken) => {
+    const checkWinLose = (currentState, turnsTaken, foundOne) => {
         if (turnsTaken <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
+            soundEffects.correctLetter.pause();
+            soundEffects.correctWord.play();
             setGame({status: 'won'});
         }else if (turnsTaken > 6) {
+            soundEffects.wrongLetter.pause();
+            soundEffects.wrongWord.play();
             setGame({ status: 'lost'});
+        }else {
+            if (foundOne) {
+                soundEffects.correctLetter.currentTime = 0;
+                soundEffects.correctLetter.play();
+            } else {
+                soundEffects.wrongLetter.currentTime = 0;
+                soundEffects.wrongLetter.play();
+            }
         }
     }
 
@@ -185,7 +196,7 @@ const App = () => {
                     <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
-            {/* <h3 id="cheatWord">{word.current}</h3> */}
+            <h3 id="cheatWord">{word.current}</h3>
         </div>
     );
 }
