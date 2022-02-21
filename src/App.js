@@ -28,6 +28,18 @@ const App = () => {
 
     useEffect(() => {
         switch (game.status) {
+            case ('startup') :
+                startupTimer.current = setInterval(() => { 
+                    setGame((prevState) => {
+                        return(
+                            ({
+                                ...prevState,
+                                startUpStep : prevState.startUpStep + 1
+                            })
+                        );
+                    });
+                }, 1250);
+                break;
             case ('new game') :
                 clearInterval(startupTimer.current);
                 document.getElementById('mainContainer').style.borderBottom = "0";
@@ -56,18 +68,6 @@ const App = () => {
                 });
                 setUsedLetters(() => []);
                 setGame({status: 'in progress'});
-                break;
-            case ('startup') :
-                startupTimer.current = setInterval(() => { 
-                    setGame((prevState) => {
-                        return(
-                            ({
-                                ...prevState,
-                                startUpStep : prevState.startUpStep + 1
-                            })
-                        );
-                    });
-                }, 1250);
                 break;
             case ('won') :{
                 let tempScore = word.current.length * 100 - turn * 30;
