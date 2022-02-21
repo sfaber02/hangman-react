@@ -10,12 +10,12 @@ import { ScoreBoard } from './scoreboard';
 const App = () => {
     
     /* possible game.status(es) 
+        'startup' 
         'new game'
+        'in progress' 
         'continue' 
         'won' 
         'lost' 
-        'in progress' 
-        'startup' 
     */
 
     const [game, setGame] = useState({ status: "startup", startUpStep: 1 })
@@ -25,6 +25,7 @@ const App = () => {
     const [scoreLives, setScoreLives] = useState({score: 0, lives: 3 });
     const word = useRef('');
     let startupTimer = useRef(0);
+    let tries = useRef(() => 0);
 
     useEffect(() => {
         switch (game.status) {
@@ -38,7 +39,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 1250);
+                }, 50);
                 break;
             case ('new game') :
                 clearInterval(startupTimer.current);
@@ -90,6 +91,11 @@ const App = () => {
             
         }
     }, [game.status]);
+
+    useEffect (() =>{
+        tries.current = turn;
+        console.log (tries.current);
+    }, [turn])
     
 
     const handleClick = ({ target }) => {
@@ -106,10 +112,10 @@ const App = () => {
             }
         }
         if (!foundOne){
-            setTurn((prev) => prev + 1);
+            tries.current++;
         }
         setGameState([...currentState]);
-        checkWinLose(gameState, turn);
+        checkWinLose(gameState, tries.current);
     }
 
     const addUsedLetter = (letter) => {
@@ -117,6 +123,7 @@ const App = () => {
     }
 
     const checkWinLose = (currentState, turnsTaken) => {
+        console.log (tries.current);
         if (turnsTaken + 1 <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
             setGame({status: 'won'});
         }else if (turnsTaken + 1 > 6) {

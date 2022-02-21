@@ -5,7 +5,7 @@ const ScoreBoard = (props) => {
     const lives = props.scoreLives.lives;
     const status = props.scoreLives.status;
     const turn = props.turn;
-
+    console.log (turn);
 
     return (
         <div id="scoreBoard">
