@@ -7,7 +7,7 @@ import { words } from './words.js';
 import { Startup } from './startup';
 import { ScoreBoard } from './scoreboard';
 import { HighScore } from './highscore.js';
-import soundEffect from './sounds/beep.wav';
+import soundEffects from './sounds/sounds.js';
 
 
 const App = () => {
@@ -30,15 +30,14 @@ const App = () => {
     let startupTimer = useRef(0);
     let tries = useRef(() => 0);
     
-    //sound 
-    const beep = new Audio (soundEffect);
-
 
     useEffect(() => {
         switch (game.status) {
             case ('startup') :
+                // soundEffects.startup.load();
                 startupTimer.current = setInterval(() => { 
                     setGame((prevState) => {
+                        soundEffects.startup.play();
                         return(
                             ({
                                 ...prevState,
@@ -46,7 +45,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 50);
+                }, 1750);
                 break;
             case ('new game') :
                 clearInterval(startupTimer.current);
@@ -101,7 +100,6 @@ const App = () => {
     }, [game.status]);
 
     const handleClick = ({ target }) => {
-        beep.play();
         findMatch(target.id, gameState);
         addUsedLetter(target.id);
     }
@@ -110,11 +108,13 @@ const App = () => {
         let foundOne = false;
         for (let char in word.current) {
             if (word.current[char].toLowerCase() == letter.toLowerCase()){
+                soundEffects.correctLetter.play();
                 currentState[char] = letter;
                 foundOne = true;
             }
         }
         if (!foundOne){
+            soundEffects.wrongLetter.play();
             tries.current++;
         }
         setGameState([...currentState]);
