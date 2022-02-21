@@ -34,7 +34,7 @@ html, body {
 /* img parent div */
 #hangmanBoard {
     position: relative;
-    height: 70%;
+    height: 60%;
     margin-bottom: 30px;
     margin-top: 20px;
     /* border: 1px solid #faff00; */
@@ -49,7 +49,7 @@ html, body {
 
 #buttonGrid {
     position: relative;
-    width: 60%;
+    width: 100%;
     max-width: 500px;
     bottom: 0;
     margin-bottom: 20px;
