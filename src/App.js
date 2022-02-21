@@ -34,9 +34,6 @@ const App = () => {
     useEffect(() => {
         switch (game.status) {
             case ('startup') :
-                
-                // soundEffects.startup.load();
-                // soundEffects.startup.play();
                 startupTimer.current = setInterval(() => { 
                     setGame((prevState) => {
                         return(
@@ -46,9 +43,10 @@ const App = () => {
                             })
                         );
                     });
-                }, 50);
+                }, 1750);
                 break;
             case ('new game') :
+                soundEffects.startGame.play();
                 clearInterval(startupTimer.current);
                 document.getElementById('mainContainer').style.borderBottom = "0";
                 setScoreLives({score: 0, lives: 3, status: game.status});
@@ -65,6 +63,7 @@ const App = () => {
                 setGame({status: 'in progress'});
                 break;
             case ('continue'):
+                soundEffects.startGame.play();
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
                 tries.current = 0;
                 setGameState(() => {
@@ -154,11 +153,6 @@ const App = () => {
 
 
 
-
-
-
-
-
     return (
         <div id="mainContainer">
             {game.status === 'startup' && 
@@ -196,7 +190,7 @@ const App = () => {
                     <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
-            <h3 id="cheatWord">{word.current}</h3>
+            {/* <h3 id="cheatWord">{word.current}</h3> */}
         </div>
     );
 }

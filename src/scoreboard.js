@@ -7,6 +7,8 @@ const ScoreBoard = (props) => {
     const lives = props.scoreLives.lives;
     const turn = props.turn;
     const [highScoreList, setHighScoreList] = useState(() => ({score: 0}));
+    
+    // localStorage.setItem(LOCAL_STORAGE_KEY, 0); //reset high scores!!! careful!!
 
     useEffect(() => {
         const highScoreData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
