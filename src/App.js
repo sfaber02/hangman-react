@@ -6,7 +6,7 @@ import { HangmanDude } from './hangmandude.js';
 import { words } from './words.js';
 import { Startup } from './startup';
 import { ScoreBoard } from './scoreboard';
-
+import { HighScore } from './highscore.js';
 
 
 const App = () => {
@@ -27,6 +27,8 @@ const App = () => {
     const word = useRef('');
     let startupTimer = useRef(0);
     let tries = useRef(() => 0);
+
+
 
     useEffect(() => {
         switch (game.status) {
@@ -73,6 +75,7 @@ const App = () => {
                 break;
             case ('won') :{
                 let tempScore = word.current.length * 100 - tries.current * 30;
+                tempScore = tempScore < 1 ? 1 : tempScore;
                 setScoreLives((prev) => {
                     return({
                         ...prev,
@@ -132,6 +135,8 @@ const App = () => {
     const continueGame = () => {
         setGame({status: 'continue'});
     }
+
+
 
 
 
