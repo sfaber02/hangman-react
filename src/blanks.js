@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import letterGraphics from './graphics/letter-graphics';
+import { v4 as uuidv4 } from 'uuid';
 
 const Blanks = (props) => {
     const current = props.current;
@@ -10,7 +11,7 @@ const Blanks = (props) => {
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
-            tempLetterArray.push(<img src={letterGraphics.blank} key={c} id='_' />);
+            tempLetterArray.push(<img src={letterGraphics.blank} key={uuidv4()} id='_' />);
         }
         return tempLetterArray;
     });
@@ -19,9 +20,8 @@ const Blanks = (props) => {
         setLetterBlanks((prevBlanks) => {
             let tempBlanks = [...prevBlanks];
             for (let letter in current) {
-                // if (current[letter] = '_') continue;
                 if (current[letter] != tempBlanks[letter].props.id) {
-                    tempBlanks.splice(letter, 1, <img src={letterGraphics[current[letter].toLowerCase()]} key={letter} id={current[letter].toLowerCase()} />);
+                    tempBlanks.splice(letter, 1, <img src={letterGraphics[current[letter].toLowerCase()]} key={uuidv4()} id={current[letter].toLowerCase()} />);
                 }
             }
             return [...tempBlanks];
@@ -30,7 +30,7 @@ const Blanks = (props) => {
 
     if (status == 'lost' || status == 'won') {
         for (let letter of word) {
-            solved.push(<img src={letterGraphics[letter]} key={Math.floor(Math.random() * 1000)} id={letter} />)
+            solved.push(<img src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
         }
     }
 

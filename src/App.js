@@ -7,6 +7,8 @@ import { words } from './words.js';
 import { Startup } from './startup';
 import { ScoreBoard } from './scoreboard';
 
+
+
 const App = () => {
     
     /* possible game.status(es) 
@@ -19,7 +21,6 @@ const App = () => {
     */
 
     const [game, setGame] = useState({ status: "startup", startUpStep: 1 })
-    const [turn, setTurn] = useState(() => 0);
     const [gameState, setGameState] = useState(() => []);
     const [usedLetters, setUsedLetters] = useState(() => []);
     const [scoreLives, setScoreLives] = useState({score: 0, lives: 3 });
@@ -46,7 +47,7 @@ const App = () => {
                 document.getElementById('mainContainer').style.borderBottom = "0";
                 setScoreLives({score: 0, lives: 3, status: game.status});
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
-                setTurn(0);
+                tries.current = 0;
                 setGameState(() => {
                     let initialBoard = [];
                     for (let e = 0; e < word.current.length; e++) {
@@ -59,7 +60,7 @@ const App = () => {
                 break;
             case ('continue'):
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
-                setTurn(0);
+                tries.current = 0;
                 setGameState(() => {
                     let initialBoard = [];
                     for (let e = 0; e < word.current.length; e++) {
@@ -71,7 +72,7 @@ const App = () => {
                 setGame({status: 'in progress'});
                 break;
             case ('won') :{
-                let tempScore = word.current.length * 100 - turn * 30;
+                let tempScore = word.current.length * 100 - tries.current * 30;
                 setScoreLives((prev) => {
                     return({
                         ...prev,
@@ -91,12 +92,6 @@ const App = () => {
             
         }
     }, [game.status]);
-
-    useEffect (() =>{
-        tries.current = turn;
-        console.log (tries.current);
-    }, [turn])
-    
 
     const handleClick = ({ target }) => {
         findMatch(target.id, gameState);
@@ -123,10 +118,9 @@ const App = () => {
     }
 
     const checkWinLose = (currentState, turnsTaken) => {
-        console.log (tries.current);
-        if (turnsTaken + 1 <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
+        if (turnsTaken <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
             setGame({status: 'won'});
-        }else if (turnsTaken + 1 > 6) {
+        }else if (turnsTaken > 6) {
             setGame({ status: 'lost'});
         }
     }
@@ -152,7 +146,7 @@ const App = () => {
             {game.status === 'won' &&
                 <div className="scoreMessage">
                     <h1>THAT'S IT!</h1>
-                    <h4>Scored {word.current.length * 100 - turn * 30} Points</h4>
+                    <h4>Scored {word.current.length * 100 - tries.current * 30} Points</h4>
                 </div>
             }
             {game.status === 'lost' && 
@@ -162,7 +156,7 @@ const App = () => {
                 </div>
             }
             {game.status === 'in progress' && 
-                <HangmanDude turn={turn} />
+                <HangmanDude turn={tries.current} />
             }
             {(game.status === 'in progress' || game.status === 'won' || game.status === 'lost') && 
                 <Blanks current={gameState} status={game.status} word={word.current} />
@@ -171,7 +165,7 @@ const App = () => {
                 <Letters handleClick={handleClick} usedLetters={usedLetters} />
             }
             {game.status != 'startup' && 
-                <ScoreBoard scoreLives={scoreLives} turn={turn} />
+                <ScoreBoard scoreLives={scoreLives} turn={tries.current} />
             }
             <div id="menu">
                 {(game.status !== 'in progress' && game.status !== 'won' && (game.status != 'lost' || scoreLives.lives <= 0) && (game.startUpStep > 4 || !game.startUpStep))  && 
