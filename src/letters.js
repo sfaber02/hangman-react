@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+//NEEDS UPPER CASE LETTERS
 const Letters = (props) => {
     let usedLetters = props.usedLetters;
     const [letters, setLetters] = useState([]);

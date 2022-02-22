@@ -1,5 +1,5 @@
 import './style.css'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Letters } from './letters.js';
 import { Blanks } from './blanks.js';
 import { HangmanDude } from './hangmandude.js';
@@ -32,6 +32,7 @@ const App = () => {
     
 
     useEffect(() => {
+        console.log (game.status);
         switch (game.status) {
             case ('startup') :
                 startupTimer.current = setInterval(() => { 
@@ -43,7 +44,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 1750);
+                }, 50);
                 break;
             case ('new game') :
                 soundEffects.startGame.play();
@@ -76,7 +77,13 @@ const App = () => {
                 setUsedLetters(() => []);
                 setGame({status: 'in progress'});
                 break;
+            case ('in progress'):
+                console.log ('in progress event listener added');
+                document.addEventListener('keydown', handleKeyPress);
+                break;
             case ('won') :{
+                console.log ('won even listener SHOULD BE REMOVED');
+                document.removeEventListener("keydown", handleKeyPress);
                 let tempScore = word.current.length * 100 - tries.current * 30;
                 tempScore = tempScore < 1 ? 1 : tempScore;
                 setScoreLives((prev) => {
@@ -88,6 +95,8 @@ const App = () => {
                 break;
             }
             case ('lost') :
+                console.log ('lost even listener SHOULD BE REMOVED');
+                document.removeEventListener('keydown', () => handleKeyPress);
                 setScoreLives((prev) => {
                     return ({
                         ...prev,
@@ -103,6 +112,12 @@ const App = () => {
         findMatch(target.id, gameState);
         addUsedLetter(target.id);
     }
+
+    const handleKeyPress = useCallback((event) => {
+        console.log (event.key);
+        findMatch(event.key, gameState);
+        addUsedLetter(event.key.toUpperCase());
+    }, []);
     
     const findMatch = (letter, currentState) => {
         let foundOne = false;
@@ -190,7 +205,7 @@ const App = () => {
                     <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
-            {/* <h3 id="cheatWord">{word.current}</h3> */}
+            <h3 id="cheatWord">{word.current}</h3>
         </div>
     );
 }
