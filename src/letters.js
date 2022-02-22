@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 const Letters = (props) => {
     let usedLetters = props.usedLetters;
     const [letters, setLetters] = useState([]);
-
+    // console.log (usedLetters);
     
     useEffect(() => {
         setLetters((prev) => {

@@ -82,7 +82,7 @@ const App = () => {
                 document.addEventListener('keydown', handleKeyPress);
                 break;
             case ('won') :{
-                console.log ('won even listener SHOULD BE REMOVED');
+                console.log ('won event listener SHOULD BE REMOVED');
                 document.removeEventListener("keydown", handleKeyPress);
                 let tempScore = word.current.length * 100 - tries.current * 30;
                 tempScore = tempScore < 1 ? 1 : tempScore;
@@ -95,7 +95,7 @@ const App = () => {
                 break;
             }
             case ('lost') :
-                console.log ('lost even listener SHOULD BE REMOVED');
+                console.log ('lost event listener SHOULD BE REMOVED');
                 document.removeEventListener('keydown', () => handleKeyPress);
                 setScoreLives((prev) => {
                     return ({
@@ -103,6 +103,8 @@ const App = () => {
                         lives: prev.lives - 1
                     })
                 });
+                break;
+            default:
                 break;
             
         }
@@ -115,8 +117,13 @@ const App = () => {
 
     const handleKeyPress = useCallback((event) => {
         console.log (event.key);
-        findMatch(event.key, gameState);
-        addUsedLetter(event.key.toUpperCase());
+        console.log (gameState);
+        console.log (usedLetters.map(e => e));
+        let letter = event.key.toUpperCase();
+        if (!usedLetters.includes(letter)) {
+            findMatch(letter, gameState);
+            addUsedLetter(letter);
+        }
     }, []);
     
     const findMatch = (letter, currentState) => {
