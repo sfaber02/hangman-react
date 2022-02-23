@@ -17,18 +17,18 @@ console.log = () => {};
  * @component
  */
 const App = () => {
-  /* possible game.status(es) 
-        'startup' 
-        'new game'
-        'in progress' 
-        'continue' 
-        'won' 
-        'lost' 
-    */
 
   /**
    * Main state and ref hooks that run the game
-   *
+   * game - tracks overall game state in an object
+   * gameState - tracks the current state of the round as an array of '_' at the start where '_' are replaced by correctly guessed letters
+   * usedLetters - tracks guessed letters in an array, for hiding of letter buttons and blocking of double key inputs
+   * scoreLives - tracks the current score and lives remaining
+   * word - the current word that needs to be guessed
+   * tries - the number of incorrect guesses for the round
+   * currentGameState - mirrors gameState, used for functions that require an immediately updated gameState
+   * currentUsedLetters - mirrors usedLetters, same reason as above
+   * currentLives - mirrors ScoreLives.lives, samew reason as above
    */
   const [game, setGame] = useState({ status: "startup", startUpStep: 1 });
   const [gameState, setGameState] = useState(() => []);
@@ -41,7 +41,7 @@ const App = () => {
   let currentUsedLetters = useRef(() => []);
   let currentLives = useRef(() => 0);
 
- { 
+  
   /**
    * Monitors game.status for changes to the overall game state
    * Possible game states are:
@@ -60,7 +60,7 @@ const App = () => {
    *    - intializes usedLetters state to an empty array
    *    - sets game.status to 'in progress'
    * 'continue':
-   *    - does everything 'new game' does except does not reset ScoreLives state to intial value
+   *    - does everything 'new game' does except does not reset ScoreLives state to intial value and does not clear startup interval
    * 'in progress':
    *    - initialize event listener for key presses to input letter guesses, calls function handleKeyPress()
    * 'won': 
@@ -73,7 +73,6 @@ const App = () => {
    *    - conditionally adds an event listener for keypress to the appropriate new game / continue game function based on currentLives ref
    *    - reduces lives in ScoreLives state by 1 
    */
- }
   useEffect(() => {
     console.log(game.status);
     switch (game.status) {
@@ -176,9 +175,8 @@ const App = () => {
   }, [scoreLives.lives]);
 
   /**
-   * 
-   * @param {event object} param0
-   *  
+   * Handles click event on letter buttons
+   * @param {event object}
    */
   const handleClick = ({ target }) => {
     console.log("********* HandleClick *********");
@@ -191,6 +189,12 @@ const App = () => {
     addUsedLetter(target.id);
   };
 
+  /**
+   * Handles key press events during an 'in progress' game state
+   * Calls the same functions as handeClick()
+   * Needs useCallBack because react states are confusing!
+   * @param {Event Object}
+   */
   const handleKeyPress = useCallback((event) => {
     let letter = event.key.toUpperCase();
     console.log("********* Handle Key Press *********");
@@ -205,6 +209,15 @@ const App = () => {
     }
   }, []);
 
+  /**
+   * compares inputted letter to the letters in the word.current
+   * if a match is found currentGameState is updated
+   * if no match add 1 to tries
+   * sets new GameState based on currentGameState ref
+   * calls checkWin Lose function
+   * 
+   * @param {string} letter 
+   */
   const findMatch = (letter) => {
     console.log("********* Find Match *********");
     console.log(`gameState = ${gameState}`);
@@ -225,11 +238,24 @@ const App = () => {
     checkWinLose(tries.current, foundOne);
   };
 
+  /**
+   * Adds inputted letter to the usedLetters state so they cannot be guessed twice
+   * and also so used letter buttons are removed from the game board
+   * input checks again the usedLetters state are done in the handeclick and handleKeyPress functions
+   * @param {string} letter 
+   */
   const addUsedLetter = (letter) => {
     console.log("********* Add used Letter *********");
     setUsedLetters((prevLetters) => [...prevLetters, letter]);
   };
 
+  /**
+   * checks whether the game has been won or lost at the current state
+   * also handles playing of sounds for correct letter guess, wrong letter guess, correct word, and wrong word
+   * will change game.status to 'won' or 'lost' accordingly
+   * @param {number} turnsTaken 
+   * @param {boolean} foundOne 
+   */
   const checkWinLose = (turnsTaken, foundOne) => {
     console.log(`********Check win/Lose ************`);
     console.log(`gameState = ${gameState}`);
@@ -264,16 +290,29 @@ const App = () => {
     }
   };
 
+  /**
+   * Handles click event on New Game button.
+   * Also removes event listener to trigger new game by key press
+   */
   const startGame = useCallback(() => {
     document.removeEventListener("keydown", startGame);
     setGame({ status: "new game" });
   }, []);
 
+  /**
+   * Handles click event on Continue Game button.
+   * Also removes event listener to trigger continue by key press
+   */
   const continueGame = useCallback(() => {
     document.removeEventListener("keydown", continueGame);
     setGame({ status: "continue" });
   }, []);
 
+  /** 
+   * Main render for the entire game.
+   * There's a good amount of logic in here I'm not sure how to easily document.
+   * The short of it is different React components are conditionally rendered based (mostly) on game.status
+   */
   return (
     <div id="mainContainer">
       {game.status === "startup" && <Startup step={game.startUpStep} />}
