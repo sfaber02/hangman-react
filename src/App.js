@@ -29,6 +29,8 @@ const App = () => {
     const word = useRef('');
     let startupTimer = useRef(0);
     let tries = useRef(() => 0);
+    let currentGameState = useRef(() => []);
+    let currentUsedLetters = useRef(() => []);
     
 
     useEffect(() => {
@@ -50,7 +52,7 @@ const App = () => {
                 soundEffects.startGame.play();
                 clearInterval(startupTimer.current);
                 document.getElementById('mainContainer').style.borderBottom = "0";
-                setScoreLives({score: 0, lives: 3, status: game.status});
+                setScoreLives({score: 0, lives: 3});
                 word.current = words[Math.floor(Math.random() * (words.length - 1))];
                 tries.current = 0;
                 setGameState(() => {
@@ -110,43 +112,74 @@ const App = () => {
         }
     }, [game.status]);
 
+    useEffect (() => {
+        console.log (`set new currentGameStateRef to ${gameState}`);
+        currentGameState.current = [...gameState];
+    }, [gameState]);
+
+    useEffect(() => {
+        console.log (`set new currentUsedLetters to ${usedLetters}`);
+        currentUsedLetters.current = [...usedLetters];
+    }, [usedLetters]);
+ 
+    
     const handleClick = ({ target }) => {
-        findMatch(target.id, gameState);
+        console.log ('********* HandleClick *********');
+        console.log (target.id);
+        console.log (`gameState = ${gameState}`);
+        console.log (`currentGameState = ${currentGameState.current}`);
+        console.log (`usedLetters = ${usedLetters}`);
+        console.log (`currentUsedLetters = ${currentUsedLetters.current}`);
+        findMatch(target.id);
         addUsedLetter(target.id);
     }
 
     const handleKeyPress = useCallback((event) => {
-        console.log (event.key);
-        console.log (gameState);
-        console.log (usedLetters.map(e => e));
         let letter = event.key.toUpperCase();
-        if (!usedLetters.includes(letter)) {
-            findMatch(letter, gameState);
+        console.log ('********* Handle Key Press *********');
+        console.log (letter);
+        console.log (`gameState = ${gameState}`);
+        console.log (`currentGameState = ${currentGameState.current}`);
+        console.log (`usedLetters = ${usedLetters}`);
+        console.log (`currentUsedLetters = ${currentUsedLetters.current}`);
+        if (!currentUsedLetters.current.includes(letter) && (/[A-Z]/.test(letter))) {
+            findMatch(letter);
             addUsedLetter(letter);
         }
     }, []);
     
-    const findMatch = (letter, currentState) => {
+    const findMatch = (letter) => {
+        console.log ('********* Find Match *********');
+        console.log (`gameState = ${gameState}`);
+        console.log (`currentGameState = ${currentGameState.current}`);
+        console.log (`usedLetters = ${usedLetters}`);
+        console.log (`currentUsedLetters = ${currentUsedLetters.current}`);
         let foundOne = false;
         for (let char in word.current) {
             if (word.current[char].toLowerCase() == letter.toLowerCase()){
-                currentState[char] = letter;
+                currentGameState.current[char] = letter;
                 foundOne = true;
             }
         }
         if (!foundOne){
             tries.current++;
         }
-        setGameState([...currentState]);
-        checkWinLose(gameState, tries.current, foundOne);
+        setGameState([...currentGameState.current]);
+        checkWinLose(tries.current, foundOne);
     }
 
     const addUsedLetter = (letter) => {
+        console.log ('********* Add used Letter *********');
         setUsedLetters((prevLetters) => [...prevLetters, letter]);
     }
 
-    const checkWinLose = (currentState, turnsTaken, foundOne) => {
-        if (turnsTaken <= 7 && currentState.join('').toLowerCase() === word.current.toLowerCase()){
+    const checkWinLose = (turnsTaken, foundOne) => {
+        console.log (`********Check win/Lose ************`);
+        console.log (`gameState = ${gameState}`);
+        console.log (`currentGameState = ${currentGameState.current}`);
+        console.log (`usedLetters = ${usedLetters}`);
+        console.log (`currentUsedLetters = ${currentUsedLetters.current}`);
+        if (turnsTaken <= 7 && currentGameState.current.join('').toLowerCase() === word.current.toLowerCase()){
             soundEffects.correctLetter.pause();
             soundEffects.correctWord.play();
             setGame({status: 'won'});
