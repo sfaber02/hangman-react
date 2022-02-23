@@ -7,7 +7,8 @@ const Blanks = (props) => {
     const status = props.status;
     const word = props.word;
     let solved = [];
-    // console.log (current);
+    console.log ('********* Blanks Object Render ****************');
+    console.log (`current = ${current}`);
 
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];

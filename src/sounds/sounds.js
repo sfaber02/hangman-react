@@ -6,7 +6,8 @@ const soundEffects = {
     correctWord: new Audio(require('./correctWord.wav')),
     wrongWord: new Audio(require('./wrongWord.wav')),
     startup: new Audio(require('./startup.wav')),
-    startGame: new Audio(require('./startGame.wav'))
+    startGame: new Audio(require('./startGame.wav')),
+    gameOver : new Audio(require('./gameover.wav'))
 };
 
 

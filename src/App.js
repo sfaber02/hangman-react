@@ -10,6 +10,9 @@ import { HighScore } from './highscore.js';
 import soundEffects from './sounds/sounds.js';
 
 
+console.log = () => {}; //comment this out to enable debug mode
+
+
 const App = () => {
     
     /* possible game.status(es) 
@@ -31,7 +34,7 @@ const App = () => {
     let tries = useRef(() => 0);
     let currentGameState = useRef(() => []);
     let currentUsedLetters = useRef(() => []);
-    
+    let currentLives = useRef(() => 0);
 
     useEffect(() => {
         console.log (game.status);
@@ -98,7 +101,8 @@ const App = () => {
             }
             case ('lost') :
                 console.log ('lost event listener SHOULD BE REMOVED');
-                document.removeEventListener('keydown', () => handleKeyPress);
+                console.log (`lives = ${scoreLives.lives}`);
+                document.removeEventListener('keydown', handleKeyPress);
                 setScoreLives((prev) => {
                     return ({
                         ...prev,
@@ -122,6 +126,9 @@ const App = () => {
         currentUsedLetters.current = [...usedLetters];
     }, [usedLetters]);
  
+    useEffect(() => {
+        currentLives.current = scoreLives.lives;
+    }, [scoreLives.lives]);
     
     const handleClick = ({ target }) => {
         console.log ('********* HandleClick *********');
@@ -179,14 +186,19 @@ const App = () => {
         console.log (`currentGameState = ${currentGameState.current}`);
         console.log (`usedLetters = ${usedLetters}`);
         console.log (`currentUsedLetters = ${currentUsedLetters.current}`);
+        console.log (`Lives = ${scoreLives.lives}`);
         if (turnsTaken <= 7 && currentGameState.current.join('').toLowerCase() === word.current.toLowerCase()){
             soundEffects.correctLetter.pause();
             soundEffects.correctWord.play();
-            setGame({status: 'won'});
+            setGame({ status: 'won' });
         }else if (turnsTaken > 6) {
-            soundEffects.wrongLetter.pause();
-            soundEffects.wrongWord.play();
-            setGame({ status: 'lost'});
+            if (currentLives.current > 1) {
+                soundEffects.wrongLetter.pause();
+                soundEffects.wrongWord.play();
+            } else {
+                soundEffects.gameOver.play();
+            }
+            setGame({ status: 'lost' });
         }else {
             if (foundOne) {
                 soundEffects.correctLetter.currentTime = 0;
@@ -221,7 +233,7 @@ const App = () => {
             }
             {game.status === 'lost' && 
                 <div className='scoreMessage'>
-                    <h1>YOU ARE HANGED</h1>
+                    {scoreLives.lives < 1 ? <h1>GAME OVER</h1> : <h1>YOU ARE HANGED</h1>}
                     <h4>The word was:</h4>
                 </div>
             }
@@ -245,7 +257,7 @@ const App = () => {
                     <div id="continue"><button className='menuButtons' onClick={continueGame} >Continue</button></div>
                 }
             </div>
-            <h3 id="cheatWord">{word.current}</h3>
+            {/* <h3 id="cheatWord">{word.current}</h3> */}
         </div>
     );
 }
