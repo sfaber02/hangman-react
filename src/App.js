@@ -40,6 +40,7 @@ const App = () => {
         console.log (game.status);
         switch (game.status) {
             case ('startup') :
+                document.addEventListener("keydown", startGame);
                 startupTimer.current = setInterval(() => { 
                     setGame((prevState) => {
                         return(
@@ -49,7 +50,7 @@ const App = () => {
                             })
                         );
                     });
-                }, 50);
+                }, 1100);
                 break;
             case ('new game') :
                 soundEffects.startGame.play();
@@ -89,6 +90,7 @@ const App = () => {
             case ('won') :{
                 console.log ('won event listener SHOULD BE REMOVED');
                 document.removeEventListener("keydown", handleKeyPress);
+                document.addEventListener("keydown", continueGame);
                 let tempScore = word.current.length * 100 - tries.current * 30;
                 tempScore = tempScore < 1 ? 1 : tempScore;
                 setScoreLives((prev) => {
@@ -103,6 +105,11 @@ const App = () => {
                 console.log ('lost event listener SHOULD BE REMOVED');
                 console.log (`lives = ${scoreLives.lives}`);
                 document.removeEventListener('keydown', handleKeyPress);
+                if (currentLives.current > 1) {
+                    document.addEventListener('keydown', continueGame);
+                } else {
+                    document.addEventListener('keydown', startGame);
+                }
                 setScoreLives((prev) => {
                     return ({
                         ...prev,
@@ -210,13 +217,15 @@ const App = () => {
         }
     }
 
-    const startGame = () => {
+    const startGame = useCallback(() => {
+        document.removeEventListener("keydown", startGame);
         setGame({status: 'new game'});
-    }
+    }, []);
 
-    const continueGame = () => {
+    const continueGame = useCallback(() => {
+        document.removeEventListener("keydown", continueGame);
         setGame({status: 'continue'});
-    }
+    }, []);
 
 
 
