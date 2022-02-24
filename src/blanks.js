@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import letterGraphics from './graphics/letter-graphics';
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * Handles the rendering and updating of the blank letter spaces.  
+ * These spaces will mirror what is the in the {current} array
+ * 
+ * @param {array} props.current = current game board state
+ * @param {string} props.status = string of current game.status
+ * @param {string} props.word = string of current word to be guessed
+ * @import {array} letterGraphics - an array of images of the letters A-Z and a blank space.
+ * @import {function} uuidv4 - generates random keys for unique identifiers (required by react)
+ * @returns rendered letter blanks based on current round state
+ */
 const Blanks = (props) => {
     const current = props.current;
     const status = props.status;
@@ -10,6 +21,10 @@ const Blanks = (props) => {
     console.log ('********* Blanks Object Render ****************');
     console.log (`current = ${current}`);
 
+    /**
+     * Letter blanks state.
+     * Initializes to an array of '_' images based on the length of word  
+     */
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
@@ -18,6 +33,10 @@ const Blanks = (props) => {
         return tempLetterArray;
     });
 
+    /**
+     * Monitors current for changes and re-renders blanks with updates based on state of current
+     * currently re-renders all blanks regardless of if they've changed (I think, I'm new). would like to write something more efficient 
+     */
     useEffect(() => {
         setLetterBlanks((prevBlanks) => {
             let tempBlanks = [...prevBlanks];
@@ -30,13 +49,19 @@ const Blanks = (props) => {
         });
     }, [current]);
 
+    /**
+     * If round has ended render the solution into an array called solved 
+     * to be used for displaying on the won/lost screen
+     */
     if (status == 'lost' || status == 'won') {
         for (let letter of word) {
             solved.push(<img src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
         }
     }
 
-
+    /**
+     * Renders letter blanks if round is in progress or solution if round is over
+     */
     return (
         <div id='letterBlanks'>
             {status === 'in progress' && letterBlanks.map((blank) => blank)}

@@ -1,3 +1,6 @@
+/**
+ * An object of all the graphics used for the letters
+ */
 const letterGraphics = {
     blank: require('./blank-space.png'),
     a: require('./a.png'),

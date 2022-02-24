@@ -1,5 +1,7 @@
 
-
+/**
+ * An array of the sounds used by the game
+ */
 const soundEffects = {
     correctLetter: new Audio(require('./correctLetter.wav')),
     wrongLetter: new Audio(require('./wrongLetter.wav')),

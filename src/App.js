@@ -62,14 +62,14 @@ const App = () => {
    * 'continue':
    *    - does everything 'new game' does except does not reset ScoreLives state to intial value and does not clear startup interval
    * 'in progress':
-   *    - initialize event listener for key presses to input letter guesses, calls function handleKeyPress()
+   *    - initialize event listener for key presses to input letter guesses
    * 'won': 
-   *    - remove event listener for inputting key presses to handleKeyPress() so guesses can't be made after round has ended
+   *    - remove event listener for inputting key presses so guesses can't be made after round has ended
    *    - adds event listener to for key presses to continue game by calling continueGame()
    *    - computes a score based on the length of the word guessed and the number of wrong guesses
    *    - adds score to ScoreLives state
    * 'lost':
-   *    - remove event listener for inputting key presses to handleKeyPress() so guesses can't be made after round has ended
+   *    - remove event listener for inputting key presses so guesses can't be made after round has ended
    *    - conditionally adds an event listener for keypress to the appropriate new game / continue game function based on currentLives ref
    *    - reduces lives in ScoreLives state by 1 
    */

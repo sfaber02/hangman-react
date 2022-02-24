@@ -1,3 +1,6 @@
+/**
+ * An array of all image graphics for the hangman board
+ */
 const boardGraphics = [
     require('./0.png'),
     require('./1.png'),
