@@ -1,8 +1,9 @@
 # Hangman
 
 ## TODO
-- add space bar to continue functionality
 - high score database
+- mobile version
+- proper scaling for lower horizontal resolutions or ideally ANY resolution
 
 
 ## BUGS
