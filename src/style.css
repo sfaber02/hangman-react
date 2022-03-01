@@ -37,14 +37,31 @@ html, body {
     height: 60%;
     margin-bottom: 30px;
     margin-top: 20px;
-    /* border: 1px solid #faff00; */
+    border: 1px solid #faff00;
+}
+
+/* img tags */
+.bigGraphics {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #letterBlanks {
     position: relative;
-    bottom: 1%;
+    height: 10%;
+    max-width: 90%;
+    /* object-fit: scale-down; */
+    /* bottom: 1%; */
     margin-bottom: 10px;
-    /* border: 1px solid #faff00; */
+    border: 1px solid #faff00;
+}
+
+/* img tags */
+.letters {
+    /* position: absolute; */
+    /* top: 0; */
+    max-height: 100%;
+    /* object-fit: scale-down; */
 }
 
 #buttonGrid {
@@ -53,7 +70,7 @@ html, body {
     max-width: 500px;
     bottom: 0;
     margin-bottom: 20px;
-    /* border: 1px solid #faff00; */
+    border: 1px solid #faff00;
 }
 
 /* #newGame {
@@ -139,11 +156,10 @@ html, body {
     /* padding: 15px; */
 }
 
-/* img tags */
-.bigGraphics {
-    max-width: 100%;
-    max-height: 100%;
-}
+
+
+
+
 
 .scoreMessage {
     /* border: 1px solid #faff00;  */

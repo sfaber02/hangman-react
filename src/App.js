@@ -85,7 +85,7 @@ const App = () => {
               startUpStep: prevState.startUpStep + 1,
             };
           });
-        }, 1100);
+        }, 10);
         break;
       case "new game":
         soundEffects.startGame.play();
@@ -93,6 +93,7 @@ const App = () => {
         document.getElementById("mainContainer").style.borderBottom = "0";
         setScoreLives({ score: 0, lives: 3 });
         word.current = words[Math.floor(Math.random() * (words.length - 1))];
+        document.getElementsByClassName("letters").style.maxWidth = '20';
         tries.current = 0;
         setGameState(() => {
           let initialBoard = [];
