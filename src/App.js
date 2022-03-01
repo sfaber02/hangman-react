@@ -179,12 +179,7 @@ const App = () => {
    * @param {event object}
    */
   const handleClick = ({ target }) => {
-    console.log("********* HandleClick *********");
-    console.log(target.id);
-    console.log(`gameState = ${gameState}`);
-    console.log(`currentGameState = ${currentGameState.current}`);
-    console.log(`usedLetters = ${usedLetters}`);
-    console.log(`currentUsedLetters = ${currentUsedLetters.current}`);
+    debuggin(handleClick);
     findMatch(target.id);
     addUsedLetter(target.id);
   };
@@ -197,12 +192,7 @@ const App = () => {
    */
   const handleKeyPress = useCallback((event) => {
     let letter = event.key.toUpperCase();
-    console.log("********* Handle Key Press *********");
-    console.log(letter);
-    console.log(`gameState = ${gameState}`);
-    console.log(`currentGameState = ${currentGameState.current}`);
-    console.log(`usedLetters = ${usedLetters}`);
-    console.log(`currentUsedLetters = ${currentUsedLetters.current}`);
+    debuggin('handleKeyPress');
     if (!currentUsedLetters.current.includes(letter) && /[A-Z]/.test(letter)) {
       findMatch(letter);
       addUsedLetter(letter);
@@ -219,11 +209,7 @@ const App = () => {
    * @param {string} letter 
    */
   const findMatch = (letter) => {
-    console.log("********* Find Match *********");
-    console.log(`gameState = ${gameState}`);
-    console.log(`currentGameState = ${currentGameState.current}`);
-    console.log(`usedLetters = ${usedLetters}`);
-    console.log(`currentUsedLetters = ${currentUsedLetters.current}`);
+    debuggin('findMatch');
     let foundOne = false;
     for (let char in word.current) {
       if (word.current[char].toLowerCase() == letter.toLowerCase()) {
@@ -245,7 +231,7 @@ const App = () => {
    * @param {string} letter 
    */
   const addUsedLetter = (letter) => {
-    console.log("********* Add used Letter *********");
+    debuggin('addUsedLetter');
     setUsedLetters((prevLetters) => [...prevLetters, letter]);
   };
 
@@ -257,12 +243,7 @@ const App = () => {
    * @param {boolean} foundOne 
    */
   const checkWinLose = (turnsTaken, foundOne) => {
-    console.log(`********Check win/Lose ************`);
-    console.log(`gameState = ${gameState}`);
-    console.log(`currentGameState = ${currentGameState.current}`);
-    console.log(`usedLetters = ${usedLetters}`);
-    console.log(`currentUsedLetters = ${currentUsedLetters.current}`);
-    console.log(`Lives = ${scoreLives.lives}`);
+    debuggin('checkWinLose');
     if (
       turnsTaken <= 7 &&
       currentGameState.current.join("").toLowerCase() ===
@@ -307,6 +288,15 @@ const App = () => {
     document.removeEventListener("keydown", continueGame);
     setGame({ status: "continue" });
   }, []);
+
+  const debuggin = (name) => {
+    console.log(`********${name}************`);
+    console.log(`gameState = ${gameState}`);
+    console.log(`currentGameState = ${currentGameState.current}`);
+    console.log(`usedLetters = ${usedLetters}`);
+    console.log(`currentUsedLetters = ${currentUsedLetters.current}`);
+    console.log(`Lives = ${scoreLives.lives}`);
+  }
 
   /** 
    * Main render for the entire game.
