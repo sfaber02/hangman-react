@@ -7,5 +7,7 @@
     - dynamically set max width of letter blanks to 100% / word.length 
         - possibly with inline styling because you can't target a jsx class with dom manipultation?
 - add a bonus for perfect round.
+- refactor css style sheet for multiple resolutions
+
 ## BUGS
 - doesn't display final word if word length is 1

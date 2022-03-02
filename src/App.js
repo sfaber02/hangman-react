@@ -85,7 +85,7 @@ const App = () => {
               startUpStep: prevState.startUpStep + 1,
             };
           });
-        }, 1500);
+        }, 50);
         break;
       case "new game":
         soundEffects.startGame.play();
@@ -353,7 +353,7 @@ const App = () => {
           </div>
         )}
       </div>
-      {/* <h3 id="cheatWord">{word.current}</h3> */}
+      <h3 id="cheatWord">{word.current}</h3>
     </div>
   );
 };

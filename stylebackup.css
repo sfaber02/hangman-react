@@ -1,79 +1,202 @@
-html {
+html, body {
     background-color: black;
+    height: 100%;
+    margin: 0px;
 }
 
-/* hangman dude graphics div */
-#hangmanDude {
+#root {
+    height: 100%;
+    margin: 0px;
+}
+
+#mainContainer {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    /* max-height: 20%; */
-    max-width: 70%;
-    border: 1px solid #FAFF00
+    height: 100%;
+    align-items: center;
+    margin-top: 0px;
+    border-left: 10px solid #faff00;
+    border-right: 10px solid #faff00;
+    border-top: 10px solid #faff00;
+    border-bottom: 10px solid #faff00;
 }
-/* hangman board img tag element child of #hangmanDude */
-#board {
-    /* max-height: 70%; */
+
+#startup {
+    position: relative;
+    height: 100%;
+    margin-bottom: 30px;
+    margin-top: 0px;
+    /* border: 1px solid #faff00; */
+}
+
+/* img parent div */
+#hangmanBoard {
+    position: relative;
+    height: 60%;
     /* max-width: 50%; */
-    width: 50%;
-    /* height: 50%; */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    /* align-items: center; */
+    margin-bottom: 1.5%;
+    margin-top: 2%;
+    /* border: 1px solid #faff00; */
 }
 
-
-/* button grid div */
-#buttonGrid { 
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 75%;
-    border: 1px solid #FAFF00
-
+/* img tags */
+.bigGraphics {
+    max-width: 100%;
+    max-height: 100%;
 }
+
+#letterBlanks {
+    position: relative;
+    height: 5%;
+    top: 20;
+    max-width: 99%;
+    /* bottom: 1%; */
+    margin-bottom: 3%;
+    /* border: 1px solid #faff00; */
+}
+
+/* img tags */
+.letters {
+    /* position: absolute; */
+    /* top: 0; */
+    max-height: 100%;
+    /* bottom: 50; */
+    /* max-width: 3%; */
+    /* object-fit: scale-down; */
+}
+
+#buttonGrid {
+    position: fixed;
+    width: 90%;
+    max-width: 700px;
+    max-height: 19.5%;
+    bottom: 10%;
+    margin-bottom: 1%;
+    border: 1px solid #faff00;
+}
+
+.buttons {
+    background-color: #fffeff;
+    color: black;
+    /* font-family: 'impact'; */
+    font-size: 75%;
+    transition-duration: 0.4s;
+    border-radius: 30%;
+    width: 6.85%;
+    max-height: 50%;
+    /* height: 2%; */
+    margin: .4%;
+    /* height: 35px; */
+    /* padding: ;  */
+}
+
+.disabledButtons {
+    background-color: black;
+    color: black;
+    transition-duration: 0.4s;
+    border-radius: 50%;
+    border: 0;
+    width: 7.6%;
+    height: 50%;
+}
+
+/* #newGame {
+    position: absolute;
+    top: 30%;
+} */
+
+#scoreBoard {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    background-color: #02a9ea;
+    width: 100%;
+    height: 9%;
+    max-height: 35px;
+    padding: 0px;
+    font-size: 100%;
+    border-top: 10px solid #faff00;
+    border-left: 10px solid #02a9ea;
+    border-right: 10px solid #02a9ea;
+    justify-content:center
+}
+
+.scoreInfo {
+    text-align: center;
+    color: #FAFF00;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    /* border: 1px solid #faff00; */
+}
+
+#menu {
+    position: absolute;
+    top: 36%;
+    /* border: 1px solid #faff00; */
+}
+
+.menuButtons {
+    width: 300px;
+    background-color: #ff01fb;
+    border: none;
+    color: black;
+    padding: 20px 50px;
+    margin: 10px;
+    font-size: 32px;
+    font-family: "impact";
+    border-radius: 5%;
+    box-shadow: 5px 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.menuButtons:hover {
+    color: white;
+    transition-duration: 0.3s;
+}
+
 
 
 .buttons:hover {
     background-color: #FAFF00;
     color: black;
-    padding: 15px;
+    /* padding: 15px; */
 }
 
-.buttons {
-    background-color: black;
-    color: white;
-    transition-duration: 0.4s;
-    border-radius: 50%;
-    width: 7.6%;
-    height: 30px;
 
-}
 
-/* letter blanks graphics div */
-#letterBlanks {
-    margin: auto;
-    width: 100%;
-    text-align: center;
-    border: 1px solid #FAFF00
-}
 
-h2, h3 {
-    text-align: center;
-    color: #FAFF00; 
+
+
+.scoreMessage {
+    /* border: 1px solid #faff00;  */
 }
 
 h1 {
-    text-align: center;
-    color: #faff00; 
-    font-size: 40pt;
+    color:#faff00;
+    font-family: 'impact';
+    font-size: 100px;
+    margin: 25px;
+    margin-bottom: 10px;
+    /* border: 1px solid #faff00;  */
 }
 
-#newGame {
+h4 {
+    color:#faff00;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 10px;
+    font-size: 20px;
+    /* border: 1px solid #faff00;  */
 }
 
+#youLose {
+    margin-bottom: 60px;
+}
 
-
+#cheatWord {
+    color:#db9121;
+    position: absolute;
+    top: 100px;
+}
