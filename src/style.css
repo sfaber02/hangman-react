@@ -35,6 +35,7 @@ html, body {
 #hangmanBoard {
     position: relative;
     height: 60%;
+    /* max-width: 50%; */
     margin-bottom: 1.5%;
     margin-top: 2%;
     /* border: 1px solid #faff00; */
@@ -67,13 +68,13 @@ html, body {
 }
 
 #buttonGrid {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
+    position: fixed;
+    width: 90%;
+    max-width: 700px;
     max-height: 19.5%;
-    /* bottom: 10%; */
+    bottom: 10%;
     margin-bottom: 1%;
-    /* border: 1px solid #faff00; */
+    border: 1px solid #faff00;
 }
 
 .buttons {
