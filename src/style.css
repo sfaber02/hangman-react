@@ -37,7 +37,7 @@ html, body {
     height: 60%;
     margin-bottom: 1.5%;
     margin-top: 2%;
-    border: 1px solid #faff00;
+    /* border: 1px solid #faff00; */
 }
 
 /* img tags */
@@ -53,7 +53,7 @@ html, body {
     max-width: 99%;
     /* bottom: 1%; */
     margin-bottom: 3%;
-    border: 1px solid #faff00;
+    /* border: 1px solid #faff00; */
 }
 
 /* img tags */
@@ -73,7 +73,7 @@ html, body {
     max-height: 19.5%;
     /* bottom: 10%; */
     margin-bottom: 1%;
-    border: 1px solid #faff00;
+    /* border: 1px solid #faff00; */
 }
 
 .buttons {
