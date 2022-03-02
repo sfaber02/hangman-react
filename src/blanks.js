@@ -28,21 +28,20 @@ const Blanks = (props) => {
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
-            tempLetterArray.push(<img className='letters' src={letterGraphics.blank} key={uuidv4()} id='_' />);
+            tempLetterArray.push(<img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics.blank} key={uuidv4()} id='_' />);
         }
         return tempLetterArray;
     });
 
     /**
      * Monitors current for changes and re-renders blanks with updates based on state of current
-     * currently re-renders all blanks regardless of if they've changed (I think, I'm new). would like to write something more efficient 
      */
     useEffect(() => {
         setLetterBlanks((prevBlanks) => {
             let tempBlanks = [...prevBlanks];
             for (let letter in current) {
                 if (current[letter] != tempBlanks[letter].props.id) {
-                    tempBlanks.splice(letter, 1, <img className='letters' src={letterGraphics[current[letter].toLowerCase()]} key={uuidv4()} id={current[letter].toLowerCase()} />);
+                    tempBlanks.splice(letter, 1, <img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[current[letter].toLowerCase()]} key={uuidv4()} id={current[letter].toLowerCase()} />);
                 }
             }
             return [...tempBlanks];
@@ -55,7 +54,7 @@ const Blanks = (props) => {
      */
     if (status == 'lost' || status == 'won') {
         for (let letter of word) {
-            solved.push(<img className='letters' src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
+            solved.push(<img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
         }
     }
 

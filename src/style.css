@@ -35,8 +35,8 @@ html, body {
 #hangmanBoard {
     position: relative;
     height: 60%;
-    margin-bottom: 30px;
-    margin-top: 20px;
+    margin-bottom: 1.5%;
+    margin-top: 2%;
     border: 1px solid #faff00;
 }
 
@@ -48,11 +48,11 @@ html, body {
 
 #letterBlanks {
     position: relative;
-    height: 10%;
-    max-width: 90%;
-    /* object-fit: scale-down; */
+    height: 5%;
+    top: 20;
+    max-width: 99%;
     /* bottom: 1%; */
-    margin-bottom: 10px;
+    margin-bottom: 3%;
     border: 1px solid #faff00;
 }
 
@@ -61,6 +61,8 @@ html, body {
     /* position: absolute; */
     /* top: 0; */
     max-height: 100%;
+    /* bottom: 50; */
+    /* max-width: 3%; */
     /* object-fit: scale-down; */
 }
 
@@ -68,9 +70,35 @@ html, body {
     position: relative;
     width: 100%;
     max-width: 500px;
-    bottom: 0;
-    margin-bottom: 20px;
+    max-height: 19.5%;
+    /* bottom: 10%; */
+    margin-bottom: 1%;
     border: 1px solid #faff00;
+}
+
+.buttons {
+    background-color: #fffeff;
+    color: black;
+    /* font-family: 'impact'; */
+    font-size: 75%;
+    transition-duration: 0.4s;
+    border-radius: 30%;
+    width: 6.85%;
+    max-height: 50%;
+    /* height: 2%; */
+    margin: .4%;
+    /* height: 35px; */
+    /* padding: ;  */
+}
+
+.disabledButtons {
+    background-color: black;
+    color: black;
+    transition-duration: 0.4s;
+    border-radius: 50%;
+    border: 0;
+    width: 7.6%;
+    height: 50%;
 }
 
 /* #newGame {
@@ -84,9 +112,10 @@ html, body {
     bottom: 0;
     background-color: #02a9ea;
     width: 100%;
-    height: 35px;
+    height: 9%;
+    max-height: 35px;
     padding: 0px;
-    font-size: 20px;
+    font-size: 100%;
     border-top: 10px solid #faff00;
     border-left: 10px solid #02a9ea;
     border-right: 10px solid #02a9ea;
@@ -127,28 +156,7 @@ html, body {
     transition-duration: 0.3s;
 }
 
-.buttons {
-    background-color: #fffeff;
-    color: black;
-    font-family: 'impact';
-    font-size: 18px;
-    transition-duration: 0.4s;
-    border-radius: 50%;
-    width: 6.85%;
-    margin: 2px;
-    height: 35px;
-    padding: 5px; 
-}
 
-.disabledButtons {
-    background-color: black;
-    color: black;
-    transition-duration: 0.4s;
-    border-radius: 50%;
-    border: 0;
-    width: 7.6%;
-    height: 30px;
-}
 
 .buttons:hover {
     background-color: #FAFF00;

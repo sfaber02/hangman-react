@@ -92,8 +92,8 @@ const App = () => {
         clearInterval(startupTimer.current);
         document.getElementById("mainContainer").style.borderBottom = "0";
         setScoreLives({ score: 0, lives: 3 });
-        word.current = words[Math.floor(Math.random() * (words.length - 1))];
-        document.getElementsByClassName("letters").style.maxWidth = '20';
+        word.current = words[Math.floor(Math.random() * (words.length))];
+        // document.getElementsByClassName("letters").style.maxWidth = '20';
         tries.current = 0;
         setGameState(() => {
           let initialBoard = [];
@@ -107,7 +107,7 @@ const App = () => {
         break;
       case "continue":
         soundEffects.startGame.play();
-        word.current = words[Math.floor(Math.random() * (words.length - 1))];
+        word.current = words[Math.floor(Math.random() * (words.length))];
         tries.current = 0;
         setGameState(() => {
           let initialBoard = [];
