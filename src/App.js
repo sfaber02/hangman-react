@@ -10,7 +10,7 @@ import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
 
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
-console.log = () => {};
+// console.log = () => {};
 
 
 /**
@@ -177,7 +177,7 @@ const App = () => {
    * @param {event object}
    */
   const handleClick = ({ target }) => {
-    debuggin(handleClick);
+    debuggin('handleClick', target.id);
     findMatch(target.id);
     addUsedLetter(target.id);
   };
@@ -190,8 +190,8 @@ const App = () => {
    */
   const handleKeyPress = useCallback((event) => {
     let letter = event.key.toUpperCase();
-    debuggin('handleKeyPress');
-    if (!currentUsedLetters.current.includes(letter) && /[A-Z]/.test(letter)) {
+    debuggin('handleKeyPress', letter);
+    if (!currentUsedLetters.current.includes(letter) && /[A-Z]/.test(letter) && letter.length == 1) {
       findMatch(letter);
       addUsedLetter(letter);
     }
@@ -287,8 +287,8 @@ const App = () => {
     setGame({ status: "continue" });
   }, []);
 
-  const debuggin = (name) => {
-    console.log(`********${name}************`);
+  const debuggin = (...args) => {
+    console.log (args);
     console.log(`gameState = ${gameState}`);
     console.log(`currentGameState = ${currentGameState.current}`);
     console.log(`usedLetters = ${usedLetters}`);
@@ -350,7 +350,7 @@ const App = () => {
           </div>
         )}
       </div>
-      <h3 id="cheatWord">{word.current}</h3>
+      {/* <h3 id="cheatWord">{word.current}</h3> */}
     </div>
   );
 };
