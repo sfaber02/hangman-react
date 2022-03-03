@@ -39,8 +39,8 @@ html, body {
 }
 
 .buttons {
-    background-color: #fffeff;
-    color: black;
+    background-color: black;
+    color: white;
     border-radius: 30%;
     transition-duration: 0.4s;
 }
@@ -81,16 +81,7 @@ html, body {
     box-shadow: 5px 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
-.menuButtons:hover {
-    color: white;
-    transition-duration: 0.3s;
-}
 
-.buttons:hover {
-    background-color: #FAFF00;
-    color: black;
-    /* padding: 15px; */
-}
 
 
 
@@ -103,7 +94,7 @@ html, body {
 
 /* For Mobile */
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-device-width: 600px) {
 
     #mainContainer {
         margin-top: 10px;
@@ -115,31 +106,31 @@ html, body {
     
     #startup {
         margin-bottom: 30px;
-        margin-top: 33%;
+        margin-top: 20%;
     }
     
     /* img parent div */
     #hangmanBoard {
         position: relative;
-        height: 60%;
+        height: 50%;
         max-width: 90%;
         margin-bottom: 1.5%;
         margin-top: 2%;
-        /* border: 1px solid #faff00; */
+        border: 1px solid #faff00;
     }
     
 
     #letterBlanks {
-        display: flex;
-        align-items: center;
         position: relative;
-        margin-top: 150px;
+        margin: 5%;
         /* width: 95%; */
-        
+        /* transform: scale(2); */
+        transform: scaleY(2);
+        /* transform: scaleX(1.2); */
         /* height: 15%; */
         /* top: 20; */
         max-width: 99%;
-        bottom: 5%;
+        /* bottom: 5%; */
         /* margin-bottom: 3%; */
         
     }
@@ -154,12 +145,11 @@ html, body {
     }
     
     #buttonGrid {
-        position: fixed;
+        position: relative;
         width: 97%;
         height: 20%;
-        /* max-width: 700px; */
         max-height: 19.5%;
-        bottom: 10%;
+        top: 5%;
         margin-bottom: 1%;
     }
     
@@ -248,7 +238,7 @@ html, body {
 }
 
 /* for big screens */
-@media only screen and (min-width: 1200px) {  
+@media only screen and (min-device-width: 601px) {  
     #mainContainer {
         margin-top: 0px;
         border-left: 10px solid #faff00;
@@ -354,10 +344,20 @@ html, body {
         font-size: 32px;
     }
     
-
+    .menuButtons:hover {
+        color: white;
+        transition-duration: 0.3s;
+    }
+    
+    .buttons:hover {
+        background-color: #FAFF00;
+        color: black;
+        /* padding: 15px; */
+    }
     
     .scoreMessage {
-        /* border: 1px solid #faff00;  */
+        position: relative;
+        border: 1px solid #faff00; 
     }
     
     h1 {

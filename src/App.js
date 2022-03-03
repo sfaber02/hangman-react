@@ -12,6 +12,7 @@ import soundEffects from "./sounds/sounds.js";
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
 console.log = () => {};
 
+
 /**
  * Main App component. whatever it does, it does it all.
  * @component
@@ -120,11 +121,9 @@ const App = () => {
         setGame({ status: "in progress" });
         break;
       case "in progress":
-        console.log("in progress event listener added");
         document.addEventListener("keydown", handleKeyPress);
         break;
       case "won": {
-        console.log("won event listener SHOULD BE REMOVED");
         document.removeEventListener("keydown", handleKeyPress);
         document.addEventListener("keydown", continueGame);
         let tempScore = word.current.length * 100 - tries.current * 30;
@@ -138,8 +137,6 @@ const App = () => {
         break;
       }
       case "lost":
-        console.log("lost event listener SHOULD BE REMOVED");
-        console.log(`lives = ${scoreLives.lives}`);
         document.removeEventListener("keydown", handleKeyPress);
         if (currentLives.current > 1) {
           document.addEventListener("keydown", continueGame);

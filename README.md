@@ -11,3 +11,5 @@
 
 ## BUGS
 - doesn't display final word if word length is 1
+- certain non letter keys (arrows, enter, backspace) are counting as guesses
+
