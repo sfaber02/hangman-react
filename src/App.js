@@ -86,7 +86,7 @@ const App = () => {
               startUpStep: prevState.startUpStep + 1,
             };
           });
-        }, 50);
+        }, 1500);
         break;
       case "new game":
         soundEffects.startGame.play();
