@@ -9,7 +9,6 @@ import { Startup } from "./startup";
 import { ScoreBoard } from "./scoreboard";
 import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
-import { isCompositeComponent } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
 // console.log = () => {};
@@ -17,6 +16,13 @@ import { isCompositeComponent } from "react-dom/cjs/react-dom-test-utils.product
 /** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
 const API = process.env.REACT_APP_API_URL;
+
+// localStorage.clear();
+/**Load local player if there is one */
+let localPLayer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+if (!localPLayer) {
+  localPLayer = ''
+}
 
 /**
  * Main App component. whatever it does, it does it all.
@@ -40,7 +46,7 @@ const App = () => {
   const [gameState, setGameState] = useState(() => []);
   const [usedLetters, setUsedLetters] = useState(() => []);
   const [scoreLives, setScoreLives] = useState({ score: 0, lives: 3 });
-  const [player, setPlayer] = useState({ name: '', highScore: 0, rank: null });
+  const [player, setPlayer] = useState({ name: localPLayer, highScore: 0, rank: null });
   const [newPlayerState, setNewPlayerState] = useState({ status: '', message: 'Enter Name', buttonMessage: 'Submit' });
   const word = useRef("");
   let startupTimer = useRef(0);
@@ -201,6 +207,10 @@ const App = () => {
     }    
   }, [scoreLives.score]);
 
+  useEffect(() => {
+    saveLocalPlayer();
+  }, [player.name]);
+
   /** Responds to new player button click */
   const newPlayer = () => {
     setGame({ status: 'new player'});
@@ -241,7 +251,7 @@ const App = () => {
   }
 
   /**
-   * Adds new player to highscore DB and set player state
+   * Adds new player to highscore DB and set player state and sets local player
    * @param {string} name 
    */
   const addPlayer = (name) => {
@@ -272,6 +282,11 @@ const App = () => {
       .catch((e) => console.log(e));
     console.log (`${newPlayerState.name} Loaded`);
     setGame({ status: 'new game' });
+  }
+
+  const saveLocalPlayer = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(player.name.toLowerCase()));
+    console.log (`new local player set to ${player.name}`)
   }
 
   /**
@@ -374,9 +389,23 @@ const App = () => {
   /**
    * Handles click event on New Game button.
    * Also removes event listener to trigger new game by key press
+   * also loads highscore and rank for player from db
    */
   const startGame = useCallback(() => {
     // document.removeEventListener("keydown", startGame);
+    axios
+      .get(`${API}/${player.name.toLowerCase()}`)
+      .then((response) => {
+        axios
+          .get(`${API}/ranking/${player.name}`)
+          .then((rank) => {
+            setPlayer((prev) => {
+              return ({ ...prev, highScore: response.data[0].score, rank: rank.data });
+            });
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((e) => console.log(e));
     setGame({ status: "new game" });
   }, []);
 
