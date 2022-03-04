@@ -9,6 +9,7 @@ import { Startup } from "./startup";
 import { ScoreBoard } from "./scoreboard";
 import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
+import { isCompositeComponent } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
 // console.log = () => {};
@@ -39,8 +40,8 @@ const App = () => {
   const [gameState, setGameState] = useState(() => []);
   const [usedLetters, setUsedLetters] = useState(() => []);
   const [scoreLives, setScoreLives] = useState({ score: 0, lives: 3 });
-  const [player, setPlayer] = useState({name: '', highScore: 0});
-  const [newPlayerState, setNewPlayerState] = useState({status: '', message: 'Enter Name', buttonMessage: 'Submit'});
+  const [player, setPlayer] = useState({ name: '', highScore: 0, rank: null });
+  const [newPlayerState, setNewPlayerState] = useState({ status: '', message: 'Enter Name', buttonMessage: 'Submit' });
   const word = useRef("");
   let startupTimer = useRef(0);
   let tries = useRef(() => 0);
@@ -177,12 +178,37 @@ const App = () => {
   useEffect(() => {
     currentLives.current = scoreLives.lives;
   }, [scoreLives.lives]);
+  
+  /** monitors current score and updates highscore if appropriate */
+  useEffect(() => {
+    if (scoreLives.score > player.highScore) {
+      axios
+        .put(`${API}/?name=${player.name.toLowerCase()}&score=${scoreLives.score}`)
+        .then((response) => {
+          axios
+            .get(`${API}/ranking/${player.name.toLowerCase()}`)
+            .then((rankRes) => {
+              setPlayer((prev) => {
+                return ({
+                  ...prev,
+                  rank: rankRes.data,
+                  highScore: scoreLives.score
+                });
+              });
+            })
+        })
+        .catch((e) => console.log(e));
+    }    
+  }, [scoreLives.score]);
 
+  /** Responds to new player button click */
   const newPlayer = () => {
     setGame({ status: 'new player'});
   }
 
-  /** checks if player is already in highscore DB */
+  /** checks if player is already in highscore DB 
+   * responds to submit/ submit again button click on new player form
+  */
   const checkPlayer = () => {
     const name = newName.current.value;
     if (name == '') return;
@@ -197,6 +223,9 @@ const App = () => {
             .get(`${API}/${name.toLowerCase()}`)
             .then((response) => {
               setNewPlayerState({
+                name: name,
+                score: response.data[0].score,
+                rank: null,
                 status: `name exists`,
                 message: `${name} Exists`,
                 message2: `High Score ${response.data[0].score}`,
@@ -212,18 +241,37 @@ const App = () => {
   }
 
   /**
-   * Adds new player to highscore DB
+   * Adds new player to highscore DB and set player state
    * @param {string} name 
    */
   const addPlayer = (name) => {
     axios
       .post(`${API}/${name.toLowerCase()}`)
       .then((response) => {
-        if (response.status != 201) {
-          console.log ('it didnt work!!');
-        }
+        axios 
+          .get(`${API}/ranking/${name.toLowerCase()}`)
+          .then((rank) => {
+            setPlayer({ name: name, highScore: 0, rank: rank.data });
+            setGame({ status: 'new game' });
+          })
+          .catch((err) => console.log(err));
       })
       .catch((e) => console.log (e));
+  }
+
+  /**
+   * Loads player from DB responds to load player button
+   * @param {string} name 
+   */
+  const loadPlayer = () => {
+    axios
+      .get(`${API}/ranking/${newPlayerState.name}`)
+      .then((response) => {
+        setPlayer({ name: newPlayerState.name, highScore: newPlayerState.score, rank: response.data });
+      })
+      .catch((e) => console.log(e));
+    console.log (`${newPlayerState.name} Loaded`);
+    setGame({ status: 'new game' });
   }
 
   /**
@@ -382,7 +430,7 @@ const App = () => {
         <Letters handleClick={handleClick} usedLetters={usedLetters} />
       )}
       {game.status != "startup" && game.status != 'new player' && (
-        <ScoreBoard scoreLives={scoreLives} turn={tries.current} />
+        <ScoreBoard scoreLives={scoreLives} turn={tries.current} player={player} />
       )}
       <div id="menu">
         {game.status !== "in progress" &&
@@ -423,7 +471,7 @@ const App = () => {
             {newPlayerState.status == 'name exists' &&
             <div>
               <h5>{newPlayerState.message2}</h5> 
-              <button className="menuButtons">{newPlayerState.buttonMessage2}</button>
+              <button className="menuButtons" onClick={loadPlayer}>{newPlayerState.buttonMessage2}</button>
             </div>
             }
             <input ref={newName} id='nameInput' type='text' maxLength='20' minLength='1' ></input>
