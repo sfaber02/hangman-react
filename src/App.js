@@ -12,6 +12,7 @@ import soundEffects from "./sounds/sounds.js";
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
 // console.log = () => {};
 
+const LOCAL_STORAGE_KEY = 'hangman.player';
 
 /**
  * Main App component. whatever it does, it does it all.
@@ -35,12 +36,14 @@ const App = () => {
   const [gameState, setGameState] = useState(() => []);
   const [usedLetters, setUsedLetters] = useState(() => []);
   const [scoreLives, setScoreLives] = useState({ score: 0, lives: 3 });
+  const [player, setPlayer] = useState({name: '', highScore: 0});
   const word = useRef("");
   let startupTimer = useRef(0);
   let tries = useRef(() => 0);
   let currentGameState = useRef(() => []);
   let currentUsedLetters = useRef(() => []);
   let currentLives = useRef(() => 0);
+  let newName = useRef();
 
   
   /**
@@ -78,7 +81,7 @@ const App = () => {
     console.log(game.status);
     switch (game.status) {
       case "startup":
-        document.addEventListener("keydown", startGame);
+        // document.addEventListener("keydown", startGame);
         startupTimer.current = setInterval(() => {
           setGame((prevState) => {
             return {
@@ -86,7 +89,7 @@ const App = () => {
               startUpStep: prevState.startUpStep + 1,
             };
           });
-        }, 1500);
+        }, 500);
         break;
       case "new game":
         soundEffects.startGame.play();
@@ -94,7 +97,6 @@ const App = () => {
         document.getElementById("mainContainer").style.borderBottom = "0";
         setScoreLives({ score: 0, lives: 3 });
         word.current = words[Math.floor(Math.random() * (words.length))];
-        // document.getElementsByClassName("letters").style.maxWidth = '20';
         tries.current = 0;
         setGameState(() => {
           let initialBoard = [];
@@ -171,6 +173,14 @@ const App = () => {
   useEffect(() => {
     currentLives.current = scoreLives.lives;
   }, [scoreLives.lives]);
+
+  const newPlayer = () => {
+    setGame({ status: 'new player'});
+  }
+
+  const checkPlayer = () => {
+    console.log (newName.current.value);
+  }
 
   /**
    * Handles click event on letter buttons
@@ -274,7 +284,7 @@ const App = () => {
    * Also removes event listener to trigger new game by key press
    */
   const startGame = useCallback(() => {
-    document.removeEventListener("keydown", startGame);
+    // document.removeEventListener("keydown", startGame);
     setGame({ status: "new game" });
   }, []);
 
@@ -327,14 +337,16 @@ const App = () => {
       {game.status === "in progress" && (
         <Letters handleClick={handleClick} usedLetters={usedLetters} />
       )}
-      {game.status != "startup" && (
+      {game.status != "startup" && game.status != 'new player' && (
         <ScoreBoard scoreLives={scoreLives} turn={tries.current} />
       )}
       <div id="menu">
         {game.status !== "in progress" &&
           game.status !== "won" &&
           (game.status != "lost" || scoreLives.lives <= 0) &&
-          (game.startUpStep > 4 || !game.startUpStep) && (
+          (game.startUpStep > 4 || !game.startUpStep) &&
+          (player.name != '') &&
+          (game.status != 'new player') && (
             <div id="newGame">
               <button className="menuButtons" onClick={startGame}>
                 New Game
@@ -349,6 +361,26 @@ const App = () => {
             </button>
           </div>
         )}
+        {game.status == 'startup'  && 
+        (game.startUpStep > 4 || !game.startUpStep) &&
+        player.name != '' &&  
+          <div id="loadedPlayer">
+            <button className="menuButtons2">Loaded Player: {player.name}</button>
+          </div>
+        }
+        {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
+          <div>
+            <button className='menuButtons' onClick={newPlayer}>New Player</button>
+          </div>
+        }
+        {game.status == 'new player' &&
+          <div id='newPlayer'>
+            <h1>Enter Name</h1>
+            <input ref={newName} id='nameInput' type='text' ></input>
+            <br></br>
+            <button className="menuButtons" onClick={checkPlayer}>Submit</button>
+          </div>
+        }
       </div>
       {/* <h3 id="cheatWord">{word.current}</h3> */}
     </div>

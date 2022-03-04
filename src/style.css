@@ -81,10 +81,26 @@ html, body {
     box-shadow: 5px 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
+.menuButtons2 {
+    background-color: #02a9ea;
+    border: none;
+    color: black;
+    padding: 20px 50px;
+    margin: 10px;
+    font-family: "impact";
+    border-radius: 5%;
+    box-shadow: 5px 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
 /* img tags */
 .bigGraphics {
     max-width: 100%;
     max-height: 100%;
+}
+
+h2 {
+    color: #ff01fb;
+    text-align: center; 
 }
 
 
@@ -196,6 +212,12 @@ html, body {
     }
     
     .menuButtons {
+        width: 400px;
+        height: 175px;
+        font-size: 48px;
+    }
+
+    .menuButtons2 {
         width: 400px;
         height: 175px;
         font-size: 48px;
@@ -339,6 +361,11 @@ html, body {
         width: 300px;
         font-size: 32px;
     }
+
+    .menuButtons2 {
+        width: 300px;
+        font-size: 24px;
+    }
     
     .menuButtons:hover {
         color: white;
@@ -356,6 +383,11 @@ html, body {
         /* border: 1px solid #faff00;  */
     }
     
+    #newPlayer {
+       border: 1px solid #faff00;
+       text-align: center;  
+    }
+
     h1 {
         color:#faff00;
         font-family: 'impact';
@@ -488,6 +520,11 @@ html, body {
     }
     
     .menuButtons {
+        width: 300px;
+        font-size: 32px;
+    }
+
+    .menuButtons2 {
         width: 300px;
         font-size: 32px;
     }
