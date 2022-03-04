@@ -1,5 +1,6 @@
 import "./style.css";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import axios from 'axios';
 import { Letters } from "./letters.js";
 import { Blanks } from "./blanks.js";
 import { HangmanDude } from "./hangmandude.js";
@@ -12,7 +13,9 @@ import soundEffects from "./sounds/sounds.js";
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
 // console.log = () => {};
 
+/** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
+const API = process.env.REACT_APP_API_URL;
 
 /**
  * Main App component. whatever it does, it does it all.
@@ -37,6 +40,7 @@ const App = () => {
   const [usedLetters, setUsedLetters] = useState(() => []);
   const [scoreLives, setScoreLives] = useState({ score: 0, lives: 3 });
   const [player, setPlayer] = useState({name: '', highScore: 0});
+  const [newPlayerState, setNewPlayerState] = useState({status: '', message: 'Enter Name', buttonMessage: 'Submit'});
   const word = useRef("");
   let startupTimer = useRef(0);
   let tries = useRef(() => 0);
@@ -178,8 +182,48 @@ const App = () => {
     setGame({ status: 'new player'});
   }
 
+  /** checks if player is already in highscore DB */
   const checkPlayer = () => {
-    console.log (newName.current.value);
+    const name = newName.current.value;
+    if (name == '') return;
+    axios
+      .get(`${API}/check/${name.toLowerCase()}`)
+      .then((response) => {
+        if (!response.data){
+          console.log ('name not in dB, creating new player');
+          addPlayer(name);
+        } else {
+          axios
+            .get(`${API}/${name.toLowerCase()}`)
+            .then((response) => {
+              setNewPlayerState({
+                status: `name exists`,
+                message: `${name} Exists`,
+                message2: `High Score ${response.data[0].score}`,
+                buttonMessage: 'Submit Again', 
+                buttonMessage2: `Load ${name}`,
+              });
+            })
+            .catch((err) => console.log(err));
+        }
+      })
+      .catch((error) => console.log(error));
+    newName.current.value = '';
+  }
+
+  /**
+   * Adds new player to highscore DB
+   * @param {string} name 
+   */
+  const addPlayer = (name) => {
+    axios
+      .post(`${API}/${name.toLowerCase()}`)
+      .then((response) => {
+        if (response.status != 201) {
+          console.log ('it didnt work!!');
+        }
+      })
+      .catch((e) => console.log (e));
   }
 
   /**
@@ -365,20 +409,26 @@ const App = () => {
         (game.startUpStep > 4 || !game.startUpStep) &&
         player.name != '' &&  
           <div id="loadedPlayer">
-            <button className="menuButtons2">Loaded Player: {player.name}</button>
+            <button style={ {fontSize:'15pt'} } className="menuButtons2">Loaded Player: {player.name}</button>
           </div>
         }
         {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
           <div>
-            <button className='menuButtons' onClick={newPlayer}>New Player</button>
+            <button style={ {fontSize:'15pt'} } className='menuButtons' onClick={newPlayer}>Create/ Change Player</button>
           </div>
         }
         {game.status == 'new player' &&
           <div id='newPlayer'>
-            <h1>Enter Name</h1>
-            <input ref={newName} id='nameInput' type='text' ></input>
+            <h2>{newPlayerState.message}</h2>
+            {newPlayerState.status == 'name exists' &&
+            <div>
+              <h5>{newPlayerState.message2}</h5> 
+              <button className="menuButtons">{newPlayerState.buttonMessage2}</button>
+            </div>
+            }
+            <input ref={newName} id='nameInput' type='text' maxLength='20' minLength='1' ></input>
             <br></br>
-            <button className="menuButtons" onClick={checkPlayer}>Submit</button>
+            <button className="menuButtons" onClick={checkPlayer}>{newPlayerState.buttonMessage}</button>
           </div>
         }
       </div>
