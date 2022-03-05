@@ -17,42 +17,6 @@ const ScoreBoard = (props) => {
     const player = props.player;
     const turn = props.turn;
 
-    /**
-     * State for storing the current high score, stored client-side
-    */
-    // const [highScoreList, setHighScoreList] = useState(() => ({score: 0}));
-    
-    /** uncomment and run app to reset local highscore
-     * this will ultimately be removed once highscore DB is up
-     */
-    // localStorage.setItem(LOCAL_STORAGE_KEY, 0); //resets high scores!!! careful!!
-
-    /** First render effect that loads highscore from local storage, and sets highScoreList to stored value if it exists */
-    // useEffect(() => {
-    //     const highScoreData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    //     if (highScoreData) {
-    //        setHighScoreList(highScoreData);
-    //     }
-    // }, []);
-
-    /**
-     * Monitors score to see if it exceeds current highscore
-     * updates highScoreList state if new highscore has been achieved
-     */
-    // useEffect (() => {
-    //     if (score > player.highScore) {
-            
-    //     }
-    // }, [score]);
-
-    /** Monitors highScoreList for changes and writes changes to local storage */
-    // useEffect(() => {
-    //     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(highScoreList));
-    // }, [highScoreList]);
-
-    
-
-
     return (
         <div id="scoreBoard">
             <h3 className='scoreInfo'>{player.name}</h3>

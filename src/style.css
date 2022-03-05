@@ -67,7 +67,7 @@ html, body {
 }
 
 #menu {
-    /* border: 1px solid #faff00; */
+    /* border: 1px solid purple; */
 }
 
 #newPlayer {
@@ -83,6 +83,38 @@ html, body {
     background-color: black;
     color: white;
  }
+
+#highScoreTable {
+    margin: auto;
+    /* border: 1px solid #faff00;  */
+}
+
+ td {
+    /* text-align: center; */
+    color: #ff01fb;
+    font-size: 24pt;
+    width: 10%;
+    font-family: 'impact';
+    /* border: 1px solid #faff00; */
+ }
+
+ .highScoreName {
+     text-align: left;
+ }
+
+ .highScoreScore {
+     text-align: right;
+ }
+
+ .highScoreNumber {
+     text-align: left;
+     /* width: 5px; */
+ }
+
+#highScoreButton {
+    margin: auto;
+    text-align: center;
+}
 
 .menuButtons {
     background-color: #ff01fb;

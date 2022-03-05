@@ -47,6 +47,7 @@ const App = () => {
   const [usedLetters, setUsedLetters] = useState(() => []);
   const [scoreLives, setScoreLives] = useState({ score: 0, lives: 3 });
   const [player, setPlayer] = useState({ name: localPLayer, highScore: 0, rank: null });
+  const [highScores, setHighScores] = useState(() => []);
   const [newPlayerState, setNewPlayerState] = useState({ status: '', message: 'Enter Name', buttonMessage: 'Submit' });
   const word = useRef("");
   let startupTimer = useRef(0);
@@ -289,6 +290,20 @@ const App = () => {
     console.log (`new local player set to ${player.name}`)
   }
 
+  const highScoresDisplay = () => {
+    axios
+      .get(`${API}/topTen`)
+      .then((response) =>{
+          setHighScores([...response.data]);
+      })
+      .catch((e) => console.log(e));
+    setGame({status: 'high score', startUpStep: 4});
+  }
+
+  const highScoreReturn = () => {
+    setGame({status: 'startup', startUpStep: 5})
+  }
+
   /**
    * Handles click event on letter buttons
    * @param {event object}
@@ -458,7 +473,7 @@ const App = () => {
       {game.status === "in progress" && (
         <Letters handleClick={handleClick} usedLetters={usedLetters} />
       )}
-      {game.status != "startup" && game.status != 'new player' && (
+      {game.status != "startup" && game.status != 'new player' && game.status != 'high score' && (
         <ScoreBoard scoreLives={scoreLives} turn={tries.current} player={player} />
       )}
       <div id="menu">
@@ -467,7 +482,8 @@ const App = () => {
           (game.status != "lost" || scoreLives.lives <= 0) &&
           (game.startUpStep > 4 || !game.startUpStep) &&
           (player.name != '') &&
-          (game.status != 'new player') && (
+          (game.status != 'new player') &&
+          (game.status != 'high score') && (
             <div id="newGame">
               <button className="menuButtons" onClick={startGame}>
                 New Game
@@ -492,6 +508,13 @@ const App = () => {
         {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
           <div>
             <button style={ {fontSize:'15pt'} } className='menuButtons' onClick={newPlayer}>Create/ Change Player</button>
+            
+          </div>
+        }
+        {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
+          <div>
+            <button style={ {fontSize:'15pt'} } className='menuButtons' onClick={highScoresDisplay}>High Scores</button>
+            
           </div>
         }
         {game.status == 'new player' &&
@@ -509,6 +532,16 @@ const App = () => {
           </div>
         }
       </div>
+      {game.status == 'high score' &&
+      <>
+        <div id="highScores">
+          <HighScore highScores={highScores} />
+        </div>
+        <div id="highScoreButton">
+          <button className="menuButtons" onClick={highScoreReturn}>Return</button>
+        </div>
+      </>
+      }
       {/* <h3 id="cheatWord">{word.current}</h3> */}
     </div>
   );
