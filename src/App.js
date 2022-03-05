@@ -65,6 +65,10 @@ const App = () => {
    *    - adds event listener for key press to start game
    *    - starts an interval function which steps through the intro screen
    *    - displays new game button on last step
+   * 'new player' :
+   *    - DOCUMENTATION NEEDED
+   * 'high score' :
+   *    - DOCUMENTATION NEEDED
    * 'new game':
    *    - plays new game sound
    *    - clears startup interval 
@@ -141,6 +145,7 @@ const App = () => {
         document.removeEventListener("keydown", handleKeyPress);
         document.addEventListener("keydown", continueGame);
         let tempScore = word.current.length * 100 - tries.current * 30;
+        tempScore = tries.current == 0 ? tempScore * 1.5 : tempScore;
         tempScore = tempScore < 1 ? 1 : tempScore;
         setScoreLives((prev) => {
           return {
@@ -300,6 +305,7 @@ const App = () => {
     setGame({status: 'high score', startUpStep: 4});
   }
 
+  /** handles return button click on high score board */
   const highScoreReturn = () => {
     setGame({status: 'startup', startUpStep: 5})
   }
@@ -452,9 +458,9 @@ const App = () => {
       {game.status === "startup" && <Startup step={game.startUpStep} />}
       {game.status === "won" && (
         <div className="scoreMessage">
-          <h1>THAT'S IT!</h1>
+          <h1>{tries.current != 0 ? "THAT'S IT" : "PERFECT!"}</h1>
           <h4>
-            Scored {word.current.length * 100 - tries.current * 30} Points
+            Scored {tries.current != 0 ? word.current.length * 100 - tries.current * 30 : word.current.length * 150} Points
           </h4>
         </div>
       )}
@@ -542,7 +548,7 @@ const App = () => {
         </div>
       </>
       }
-      {/* <h3 id="cheatWord">{word.current}</h3> */}
+      <h3 id="cheatWord">{word.current}</h3>
     </div>
   );
 };
