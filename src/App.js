@@ -413,7 +413,7 @@ const App = () => {
    * also loads highscore and rank for player from db
    */
   const startGame = useCallback(() => {
-    // document.removeEventListener("keydown", startGame);
+    document.removeEventListener("keydown", startGame);
     axios
       .get(`${API}/${player.name.toLowerCase()}`)
       .then((response) => {
