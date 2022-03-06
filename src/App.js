@@ -549,7 +549,7 @@ const App = () => {
         </div>
       </>
       }
-      <h3 id="cheatWord">{word.current}</h3>
+      {/* <h3 id="cheatWord">{word.current}</h3> */}
     </div>
   );
 };
