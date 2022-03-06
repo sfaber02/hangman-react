@@ -6,5 +6,7 @@
 
 ## BUGS
 - doesn't display final word if word length is 1
+- lose message wraps onto next line pushing letter blanks into button on skinny displays
+
 
 
