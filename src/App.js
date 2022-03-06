@@ -16,6 +16,7 @@ import soundEffects from "./sounds/sounds.js";
 /** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
 const API = process.env.REACT_APP_API_URL;
+console.log (API);
 
 // localStorage.clear();
 /**Load local player if there is one */
@@ -105,7 +106,7 @@ const App = () => {
               startUpStep: prevState.startUpStep + 1,
             };
           });
-        }, 500);
+        }, 800);
         break;
       case "new game":
         soundEffects.startGame.play();
