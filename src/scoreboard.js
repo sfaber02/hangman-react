@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-/** set local storage location */
-const LOCAL_STORAGE_KEY = 'hangman.highscores';
+import React from 'react';
 
 /**
  * 

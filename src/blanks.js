@@ -28,7 +28,7 @@ const Blanks = (props) => {
     const [letterBlanks, setLetterBlanks] = useState(() => {
         let tempLetterArray = [];
         for (let c = 0; c < current.length; c++) {
-            tempLetterArray.push(<img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics.blank} key={uuidv4()} id='_' />);
+            tempLetterArray.push(<img alt="blank" style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics.blank} key={uuidv4()} id='_' />);
         }
         return tempLetterArray;
     });
@@ -40,8 +40,8 @@ const Blanks = (props) => {
         setLetterBlanks((prevBlanks) => {
             let tempBlanks = [...prevBlanks];
             for (let letter in current) {
-                if (current[letter] != tempBlanks[letter].props.id) {
-                    tempBlanks.splice(letter, 1, <img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[current[letter].toLowerCase()]} key={uuidv4()} id={current[letter].toLowerCase()} />);
+                if (current[letter] !== tempBlanks[letter].props.id) {
+                    tempBlanks.splice(letter, 1, <img alt={letter} style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[current[letter].toLowerCase()]} key={uuidv4()} id={current[letter].toLowerCase()} />);
                 }
             }
             return [...tempBlanks];
@@ -52,9 +52,9 @@ const Blanks = (props) => {
      * If round has ended render the solution into an array called solved 
      * to be used for displaying on the won/lost screen
      */
-    if (status == 'lost' || status == 'won') {
+    if (status === 'lost' || status === 'won') {
         for (let letter of word) {
-            solved.push(<img style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
+            solved.push(<img alt={letter} style={{maxWidth: `${100 / word.length}%`}} className='letters' src={letterGraphics[letter]} key={uuidv4()} id={letter} />)
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import boardGraphics from './graphics/board-graphics.js';
 
 /**
@@ -17,7 +17,7 @@ const HangmanDude = (props) => {
 
     return (
        <div id="hangmanBoard">
-           <img className='bigGraphics' src={boardGraphics[turn]} />
+           <img alt="hangmanDude" className='bigGraphics' src={boardGraphics[turn]} />
        </div> 
     );
 }

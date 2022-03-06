@@ -10,13 +10,12 @@ import { ScoreBoard } from "./scoreboard";
 import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
 
-/** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
+/** Debug switch - will redefine console.log to {} and disable all logging, comment out for debugging mode */
 console.log = () => {};
 
 /** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
 const API = process.env.REACT_APP_API_URL;
-console.log (API);
 
 // localStorage.clear();
 /**Load local player if there is one */
@@ -146,7 +145,7 @@ const App = () => {
         document.removeEventListener("keydown", handleKeyPress);
         document.addEventListener("keydown", continueGame);
         let tempScore = word.current.length * 100 - tries.current * 30;
-        tempScore = tries.current == 0 ? tempScore * 1.5 : tempScore;
+        tempScore = tries.current === 0 ? tempScore * 1.5 : tempScore;
         tempScore = tempScore < 1 ? 1 : tempScore;
         setScoreLives((prev) => {
           return {
@@ -228,7 +227,7 @@ const App = () => {
   */
   const checkPlayer = () => {
     const name = newName.current.value;
-    if (name == '') return;
+    if (name === '') return;
     axios
       .get(`${API}/check/${name.toLowerCase()}`)
       .then((response) => {
@@ -330,7 +329,7 @@ const App = () => {
   const handleKeyPress = useCallback((event) => {
     let letter = event.key.toUpperCase();
     debuggin('handleKeyPress', letter);
-    if (!currentUsedLetters.current.includes(letter) && /[A-Z]/.test(letter) && letter.length == 1) {
+    if (!currentUsedLetters.current.includes(letter) && /[A-Z]/.test(letter) && letter.length === 1) {
       findMatch(letter);
       addUsedLetter(letter);
     }
@@ -349,7 +348,7 @@ const App = () => {
     debuggin('findMatch');
     let foundOne = false;
     for (let char in word.current) {
-      if (word.current[char].toLowerCase() == letter.toLowerCase()) {
+      if (word.current[char].toLowerCase() === letter.toLowerCase()) {
         currentGameState.current[char] = letter;
         foundOne = true;
       }
@@ -459,15 +458,15 @@ const App = () => {
       {game.status === "startup" && <Startup step={game.startUpStep} />}
       {game.status === "won" && (
         <div className="scoreMessage">
-          <h1>{tries.current != 0 ? "THAT'S IT" : "PERFECT!"}</h1>
+          <h1>{tries.current !== 0 ? "THAT'S IT" : "PERFECT!"}</h1>
           <h4>
-            Scored {tries.current != 0 ? word.current.length * 100 - tries.current * 30 : word.current.length * 150} Points
+            Scored {tries.current !== 0 ? word.current.length * 100 - tries.current * 30 : word.current.length * 150} Points
           </h4>
         </div>
       )}
       {game.status === "lost" && (
         <div className="scoreMessage">
-          {scoreLives.lives < 1 ? <h1>GAME OVER</h1> : <h1>YOU ARE HANGED</h1>}
+          {scoreLives.lives < 1 ? <h1>GAME OVER</h1> : <h1>HANGED</h1>}
           <h4>The word was:</h4>
         </div>
       )}
@@ -480,54 +479,54 @@ const App = () => {
       {game.status === "in progress" && (
         <Letters handleClick={handleClick} usedLetters={usedLetters} />
       )}
-      {game.status != "startup" && game.status != 'new player' && game.status != 'high score' && (
+      {game.status !== "startup" && game.status !== 'new player' && game.status !== 'high score' && (
         <ScoreBoard scoreLives={scoreLives} turn={tries.current} player={player} />
       )}
       <div id="menu">
         {game.status !== "in progress" &&
           game.status !== "won" &&
-          (game.status != "lost" || scoreLives.lives <= 0) &&
+          (game.status !== "lost" || scoreLives.lives <= 0) &&
           (game.startUpStep > 4 || !game.startUpStep) &&
-          (player.name != '') &&
-          (game.status != 'new player') &&
-          (game.status != 'high score') && (
+          (player.name !== '') &&
+          (game.status !== 'new player') &&
+          (game.status !== 'high score') && (
             <div id="newGame">
               <button className="menuButtons" onClick={startGame}>
                 New Game
               </button>
             </div>
           )}
-        {(game.status == "won" ||
-          (game.status == "lost" && scoreLives.lives > 0)) && (
+        {(game.status === "won" ||
+          (game.status === "lost" && scoreLives.lives > 0)) && (
           <div id="continue">
             <button className="menuButtons" onClick={continueGame}>
               Continue
             </button>
           </div>
         )}
-        {game.status == 'startup'  && 
+        {game.status === 'startup'  && 
         (game.startUpStep > 4 || !game.startUpStep) &&
-        player.name != '' &&  
+        player.name !== '' &&  
           <div id="loadedPlayer">
-            <button style={ {fontSize:'15pt'} } className="menuButtons2">Loaded Player: {player.name}</button>
+            <button  className="menuButtons2" id="buttonSmall">Loaded Player: {player.name}</button>
           </div>
         }
-        {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
+        {game.status === 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
           <div>
-            <button style={ {fontSize:'15pt'} } className='menuButtons' onClick={newPlayer}>Create/ Change Player</button>
+            <button className='menuButtons' id="buttonSmall" onClick={newPlayer}>Create/ Change Player</button>
             
           </div>
         }
-        {game.status == 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
+        {game.status === 'startup' && (game.startUpStep > 4 || !game.startUpStep) &&
           <div>
-            <button style={ {fontSize:'15pt'} } className='menuButtons' onClick={highScoresDisplay}>High Scores</button>
+            <button  className='menuButtons' id="buttonSmall" onClick={highScoresDisplay}>High Scores</button>
             
           </div>
         }
-        {game.status == 'new player' &&
+        {game.status === 'new player' &&
           <div id='newPlayer'>
             <h2>{newPlayerState.message}</h2>
-            {newPlayerState.status == 'name exists' &&
+            {newPlayerState.status === 'name exists' &&
             <div>
               <h5>{newPlayerState.message2}</h5> 
               <button className="menuButtons" onClick={loadPlayer}>{newPlayerState.buttonMessage2}</button>
@@ -539,7 +538,7 @@ const App = () => {
           </div>
         }
       </div>
-      {game.status == 'high score' &&
+      {game.status === 'high score' &&
       <>
         <div id="highScores">
           <HighScore highScores={highScores} />
