@@ -11,7 +11,7 @@ import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
 
 /** Debug switch - will redefine console.log to an empty function and disable all logging, comment out for debugging mode */
-// console.log = () => {};
+console.log = () => {};
 
 /** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
