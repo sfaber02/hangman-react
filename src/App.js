@@ -11,12 +11,13 @@ import { HighScore } from "./highscore.js";
 import soundEffects from "./sounds/sounds.js";
 
 /** Debug switch - will redefine console.log to {} and disable all logging, comment out for debugging mode */
-console.log = () => {};
+// console.log = () => {};
 
 /** variables for API and local storage */
 const LOCAL_STORAGE_KEY = 'hangman.player';
 const API = process.env.REACT_APP_API_URL;
-
+const BADWORDAPI = process.env.REACT_APP_API2_URL;
+console.log (BADWORDAPI);
 // localStorage.clear();
 /**Load local player if there is one */
 let localPLayer = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
@@ -228,33 +229,76 @@ const App = () => {
   const checkPlayer = () => {
     const name = newName.current.value;
     if (name === '') return;
+    
     axios
-      .get(`${API}/check/${name.toLowerCase()}`)
+      .get(`${BADWORDAPI}${name}`)
       .then((response) => {
-        if (!response.data){
-          console.log ('name not in dB, creating new player');
-          addPlayer(name);
+        console.log (response.data);
+        if (response.data) {
+          console.log ("BAD WORD");
+          return;
         } else {
+          //START OF CODE BLOCK
           axios
-            .get(`${API}/${name.toLowerCase()}`)
-            .then((response) => {
-              setNewPlayerState({
-                name: name,
-                score: response.data[0].score,
-                rank: null,
-                status: `name exists`,
-                message: `${name} Exists`,
-                message2: `High Score ${response.data[0].score}`,
-                buttonMessage: 'Submit Again', 
-                buttonMessage2: `Load ${name}`,
-              });
-            })
-            .catch((err) => console.log(err));
+          .get(`${API}/check/${name.toLowerCase()}`)
+          .then((response) => {
+            if (!response.data){
+              console.log ('name not in dB, creating new player');
+              addPlayer(name);
+            } else {
+              axios
+                .get(`${API}/${name.toLowerCase()}`)
+                .then((response) => {
+                  setNewPlayerState({
+                    name: name,
+                    score: response.data[0].score,
+                    rank: null,
+                    status: `name exists`,
+                    message: `${name} Exists`,
+                    message2: `High Score ${response.data[0].score}`,
+                    buttonMessage: 'Submit Again', 
+                    buttonMessage2: `Load ${name}`,
+                  });
+                })
+                .catch((err) => console.log(err));
+            }
+          })
+          .catch((error) => console.log(error));
+          //END OF CODE BLOCK
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        //START OF CODE BLOCK
+        axios
+        .get(`${API}/check/${name.toLowerCase()}`)
+        .then((response) => {
+          if (!response.data){
+            console.log ('name not in dB, creating new player');
+            addPlayer(name);
+          } else {
+            axios
+              .get(`${API}/${name.toLowerCase()}`)
+              .then((response) => {
+                setNewPlayerState({
+                  name: name,
+                  score: response.data[0].score,
+                  rank: null,
+                  status: `name exists`,
+                  message: `${name} Exists`,
+                  message2: `High Score ${response.data[0].score}`,
+                  buttonMessage: 'Submit Again', 
+                  buttonMessage2: `Load ${name}`,
+                });
+              })
+              .catch((err) => console.log(err));
+          }
+        })
+        .catch((error) => console.log(error));
+        //END OF CODE BLOCK
+      });
     newName.current.value = '';
   }
+
 
   /**
    * Adds new player to highscore DB and set player state and sets local player
