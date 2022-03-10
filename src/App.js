@@ -214,6 +214,7 @@ const App = () => {
     }    
   }, [scoreLives.score]);
 
+  /** Updates local storage when player name is changed */
   useEffect(() => {
     saveLocalPlayer();
   }, [player.name]);
@@ -225,11 +226,11 @@ const App = () => {
 
   /** checks if player is already in highscore DB 
    * responds to submit/ submit again button click on new player form
+   * there is redundant code in here that i don't like
   */
   const checkPlayer = () => {
     const name = newName.current.value;
     if (name === '') return;
-    
     axios
       .get(`${BADWORDAPI}${name}`)
       .then((response) => {
@@ -238,7 +239,6 @@ const App = () => {
           console.log ("BAD WORD");
           return;
         } else {
-          //START OF CODE BLOCK
           axios
           .get(`${API}/check/${name.toLowerCase()}`)
           .then((response) => {
@@ -264,7 +264,6 @@ const App = () => {
             }
           })
           .catch((error) => console.log(error));
-          //END OF CODE BLOCK
         }
       })
       .catch((error) => {
@@ -334,11 +333,13 @@ const App = () => {
     setGame({ status: 'new game' });
   }
 
+  /** saves player name to local storage */
   const saveLocalPlayer = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(player.name.toLowerCase()));
     console.log (`new local player set to ${player.name}`)
   }
 
+  /** gets top ten highest scores from the api/db and sets the highscores state */
   const highScoresDisplay = () => {
     axios
       .get(`${API}/topTen`)
